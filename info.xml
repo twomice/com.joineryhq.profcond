@@ -2,7 +2,7 @@
 <extension key="com.joineryhq.profcond" type="module">
   <file>profcond</file>
   <name>Profile Conditionals</name>
-  <description>Adds support for dynamic in-page behaviors based on changes to form fields, including showing/hiding form elements and setting field values.</description>
+  <description>Adds support for dynamic in-page behaviors based on changes to form fields in CiviCRM forms, including showing/hiding form elements and setting field values.</description>
   <license>GPL-3.0</license>
   <maintainer>
     <author>Allen Shaw</author>
