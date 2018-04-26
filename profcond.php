@@ -1,6 +1,7 @@
 <?php
 
 require_once 'profcond.civix.php';
+
 use CRM_Profcond_ExtensionUtil as E;
 
 /**
@@ -9,7 +10,7 @@ use CRM_Profcond_ExtensionUtil as E;
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_buildForm
  */
 function profcond_civicrm_buildForm($formName, &$form) {
-  if($formName == 'CRM_Event_Form_Registration_Register') {
+  if ($formName == 'CRM_Event_Form_Registration_Register') {
     $eventId = $form->get('id');
     $config = _profcond_get_search_config();
     // Only take action if we're configured to act on this event.
@@ -26,17 +27,16 @@ function profcond_civicrm_buildForm($formName, &$form) {
       if ($form->_flagSubmitted) {
         $hiddenFieldNames = json_decode($form->_submitValues['profcond_hidden_fields']);
         $temporarilyUnrequiredFields = array();
-        foreach($hiddenFieldNames as $hiddenFieldName) {
+        foreach ($hiddenFieldNames as $hiddenFieldName) {
           $index = array_search($hiddenFieldName, $form->_required);
           if ($index) {
             unset($form->_required[$index]);
             $temporarilyUnrequiredFields[] = $hiddenFieldName;
           }
-        }      
+        }
         $form->_attributes['temporarilyUnrequiredFields'] = $temporarilyUnrequiredFields;
       }
     }
-    
   }
 }
 
@@ -174,27 +174,26 @@ function profcond_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
  *
-function profcond_civicrm_preProcess($formName, &$form) {
+  function profcond_civicrm_preProcess($formName, &$form) {
 
-} // */
+  } // */
 
 /**
  * Implements hook_civicrm_navigationMenu().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  *
-function profcond_civicrm_navigationMenu(&$menu) {
+  function profcond_civicrm_navigationMenu(&$menu) {
   _profcond_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => E::ts('The Page'),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
-    'permission' => 'access CiviReport,access CiviContribute',
-    'operator' => 'OR',
-    'separator' => 0,
+  'label' => E::ts('The Page'),
+  'name' => 'the_page',
+  'url' => 'civicrm/the-page',
+  'permission' => 'access CiviReport,access CiviContribute',
+  'operator' => 'OR',
+  'separator' => 0,
   ));
   _profcond_civix_navigationMenu($menu);
-} // */
-
+  } // */
 function _profcond_get_search_config() {
   return CRM_Core_BAO_Setting::getItem(NULL, 'com.joineryhq.profcond');
 }

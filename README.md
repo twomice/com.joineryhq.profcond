@@ -1,7 +1,7 @@
 # CiviCRM Profile Conditionals
 
-This civicrm extension adds support for dynamic in-page behaviors based on changes 
-to form fields in CiviCRM forms, including showing/hiding form elements and 
+This civicrm extension adds support for dynamic in-page behaviors based on changes
+to form fields in CiviCRM forms, including showing/hiding form elements and
 setting field values.
 
 Current support includes the following forms:
@@ -32,16 +32,16 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
         ),
         'profiles' => array (
           '1' => array(
-            'display' => 'hide', 
+            'display' => 'hide',
           ),
         ),
-      ), 
+      ),
       '1_swim' => array(
         'conditions' => array(
           'all_of' => array(
             array(
               'id' => 'custom_261',
-              'op' => 'value_is', 
+              'op' => 'value_is',
               'value' => '1', //"swim"
             ),
           )
@@ -90,7 +90,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
             ),
           ),
         ),
-      ), 
+      ),
     ),
   ),
   'contribution' => array(
@@ -100,7 +100,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
 
 ```
 
-This nested array format is fragile but explicit, expressing any number of rules, 
+This nested array format is fragile but explicit, expressing any number of rules,
 and for each rule, any number of conditions (either AND or OR), and any number
 of field states to manifest when the condition test as either true or false.
 
@@ -113,7 +113,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
           '[condition-type]' => array(
             array(
               'id' => '[field-id]',
-              'op' => '[operator]', 
+              'op' => '[operator]',
               'value' => '[field-value]',
             ),
           )
@@ -128,7 +128,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
             ),
           ),
         ),
-      ), 
+      ),
     ),
   ),
 );
@@ -145,7 +145,7 @@ Must be an event ID. Rules in this section will only be applied to the events wi
 this ID.
 
 ### [rule-name]
-Must be a unique string within this page-type/page-id section. 
+Must be a unique string within this page-type/page-id section.
 Must also be suitable for use as a CSS class.
 
 ### [condition-type]
@@ -162,7 +162,7 @@ or `all_of`, containing any number of conditions.
 The HTML "id" attribute of the field to be tested in this condition.
 
 ### [operator]
-The type of comparison to be performed for this field. One of: 
+The type of comparison to be performed for this field. One of:
 
 * value_is: The field must have the given value for the condition to pass.
 * value_is_one_of: The field must have any of the given values for the condition to pass.
