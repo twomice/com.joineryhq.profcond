@@ -63,6 +63,14 @@
       el.val(state.value).change();
     }
     
+    if (state.before) {
+      el.insertBefore(state.before);
+    }
+
+    if (state.after) {
+      el.insertAfter(state.after);
+    }
+
     if (state.is_price_change) {
       switch (el.attr('type')) {
         case 'checkbox':

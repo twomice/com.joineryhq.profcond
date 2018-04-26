@@ -195,6 +195,8 @@ The attribute of the given element to be changed. One of:
 * 'properties'
 * 'attributes'
 * 'value'
+* 'before'
+* 'after'
 
 See [state-property-value] for more information.
 
@@ -208,6 +210,8 @@ For these values of [state-property], the possible [state-property] values are:
 * 'properties': An associative array of properties, to be applied to the element with jQuery().prop().
 * 'attributes': An associative array of attributes, to be applied to the element with jQuery().prop().
 * 'value': The value to which the element (which should be a form field) will be set, using jQuery().val().
+* 'before': The element will be relocated before the element indicated by this jQuery selector, with jQuery().insertBefore().
+* 'after': The element will be relocated after the element indicated by this jQuery selector, with jQuery().insertAfter().
 
 ## More examples
 A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).
