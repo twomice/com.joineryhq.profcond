@@ -74,6 +74,9 @@
     if (state.attributes) {
       el.attr(state.attributes);
     }
+    if (state.css) {
+      el.css(state.css);
+    }
 
     if (typeof state.value != 'undefined') {
       el.val(state.value).change();
