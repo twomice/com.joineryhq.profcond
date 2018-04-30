@@ -1,5 +1,21 @@
 (function ($, ts) {
 
+
+  /**
+   * Override CiviCRM's calculateTotalFee(); we want to calculate for all
+   * price fields, which we may have moved outside of #priceset.
+   * Calculate the total fee for the visible priceset.
+   */
+  calculateTotalFee = function calculateTotalFee() {
+    var totalFee = 0;
+    cj(".profcond-price-element[price]").each(function () {
+      totalFee = totalFee + cj(this).data('line_raw_total');
+    });
+    return totalFee;
+  }
+
+
+
   /**
    * Compile a list of all ':hidden' fields and store that list in the 'profcond_hidden_fields'
    * hidden field, so it will be passed to the form handler.
@@ -174,6 +190,10 @@
       profcondApplyStates(states.fail);
     }
   };
+
+  // First thing, add .profcond-price-element class to all price fields, so we can total them
+  // with our custom calculateTotalFee() function.
+  cj("#priceset [price]").addClass('profcond-price-element');
 
   // Apply default state on page load.
   if (CRM.vars.profcond.eventConfig.onload) {
