@@ -90,6 +90,14 @@
       el.insertAfter(state.after);
     }
 
+    if (state.appendTo) {
+      el.appendTo(state.appendTo);
+    }
+
+    if (state.prependTo) {
+      el.prependTo(state.prependTo);
+    }
+
     if (state.is_price_change) {
       switch (el.attr('type')) {
         case 'checkbox':
