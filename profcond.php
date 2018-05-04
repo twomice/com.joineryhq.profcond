@@ -22,9 +22,10 @@ function profcond_civicrm_buildForm($formName, &$form) {
       ));
       // Add a hidden field for transmitting names of dynamically hidden fields.
       $form->add('hidden', 'profcond_hidden_fields', NULL, array('id' => 'profcond_hidden_fields'));
-      // If the form is being submitted, note the value of profcond_hidden_fields
-      // and temporarily strip them from the "required" array.
+      // Take specific action when form has been submitted.
       if ($form->_flagSubmitted) {
+        // Note the value of profcond_hidden_fields and temporarily strip them
+        // from the "required" array. (We'll add them back later in hook_civicrm_validateForm().)
         $hiddenFieldNames = json_decode($form->_submitValues['profcond_hidden_fields']);
         $temporarilyUnrequiredFields = array();
         foreach ($hiddenFieldNames as $hiddenFieldName) {
@@ -34,16 +35,35 @@ function profcond_civicrm_buildForm($formName, &$form) {
             $temporarilyUnrequiredFields[] = $hiddenFieldName;
           }
         }
+        // Store the list so we can add them back later.
         $form->_attributes['temporarilyUnrequiredFields'] = $temporarilyUnrequiredFields;
+        // TODO:
+        // - Compile list of titles (and group titles too?)for hidden fields,
+        // and use session storage or similar to make that available to the
+        // confirmation page form. You can get this from $form->_fields.
+        //
       }
     }
   }
+  // TODO: On display of confirmation page, hide fields that are hidden, and then hide any empty profiles.
+  // elseif ($formName == 'CRM_Event_Form_Registration_Confirm' && !$form->_flagSubmitted) {
+    // Retrieve list of hidden field titles (and their group titles?), and remove
+    // them. These are built from $tpl->_tpl_vars['primaryParticipantProfile'],
+    // so you can simply unset them in that array and they won't display.
+    // May also need to do something similar for "additional participant profile"
+    // fields.
+    //
+    // $tpl = CRM_Core_Smarty::singleton();
+    // dsm($tpl->_tpl_vars['primaryParticipantProfile'], 'vars[primaryParticipantProfile]');
+    // unset($tpl->_tpl_vars['primaryParticipantProfile']['CustomPost'][15]['Participant Role']);
+  // }
 }
 
 /**
  * Implements hook_civicrm_validateForm().
  */
 function profcond_civicrm_validateForm($formName, &$fields, &$files, &$form, &$errors) {
+  // Re-add tempoarily unrequired fields to the list of required fields.
   $form->_required = array_merge($form->_required, $form->_attributes['temporarilyUnrequiredFields']);
 }
 
