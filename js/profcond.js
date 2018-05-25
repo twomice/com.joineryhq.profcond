@@ -32,6 +32,16 @@
         if (CRM.$('#' + select2id).is(':hidden')) {
           hiddenFields.push(el.name);
         }
+      // If this is a datepicker base control, it will always be hidden. We only care
+      // if the datepicker itself is hidden.
+      } else if (
+        el.type == 'text'
+        && ($(el).hasClass('crm-hidden-date') || el.hasAttribute('data-crm-datepicker'))
+      ) {
+        var datepickerid = $(el).siblings('input.hasDatepicker').attr('id');
+        if (CRM.$('#' + datepickerid).is(':hidden')) {
+          hiddenFields.push(el.name);
+        }
       } else if (el.name.length) {
         hiddenFields.push(el.name);
       }
