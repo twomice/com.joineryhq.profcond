@@ -166,6 +166,7 @@ The type of comparison to be performed for this field. One of:
 
 * value_is: The field must have the given value for the condition to pass.
 * value_is_one_of: The field must have any of the given values for the condition to pass.
+* is_checked: The field must be checked to pass (appropriate for checkbox and radio elements).
 
 ### [field-value]
 The value to be compared in this condition.

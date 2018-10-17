@@ -12,7 +12,7 @@
       totalFee = totalFee + cj(this).data('line_raw_total');
     });
     return totalFee;
-  }
+  };
 
 
 
@@ -35,8 +35,8 @@
       // If this is a datepicker base control, it will always be hidden. We only care
       // if the datepicker itself is hidden.
       } else if (
-        el.type == 'text'
-        && ($(el).hasClass('crm-hidden-date') || el.hasAttribute('data-crm-datepicker'))
+        el.type == 'text' &&
+        ($(el).hasClass('crm-hidden-date') || el.hasAttribute('data-crm-datepicker'))
       ) {
         var datepickerid = $(el).siblings('input.hasDatepicker').attr('id');
         if (CRM.$('#' + datepickerid).is(':hidden')) {
@@ -51,6 +51,11 @@
 
 
   var profcondApplyStates = function profcondApplyStates(states) {
+    if (typeof states == 'undefined') {
+      // Maybe there is no defined 'pass', 'fail' or 'onload' state,
+      // in which case do nothing and return.
+      return;
+    }
     var state;
     if (typeof states.selectors != 'undefined') {
       for (var selector in states.selectors) {
@@ -136,14 +141,17 @@
     for (var i in conditions) {
       var conditionPass = false;
       var condition = conditions[i];
+      var el = profcondGetConditionElement(condition);
       if (condition.op == 'value_is') {
-        val = CRM.$('#' + condition.id).val();
-        if (val == condition.value) {
+        if (el.val() == condition.value) {
           conditionPass = true;
         }
       } else if (condition.op == 'value_is_one_of') {
-        val = CRM.$('#' + condition.id).val();
-        if (condition.value.indexOf(val) > -1) {
+        if (condition.value.indexOf(el.val()) > -1) {
+          conditionPass = true;
+        }
+      } else if (condition.op == 'is_checked') {
+        if (el.is(":checked")) {
           conditionPass = true;
         }
       }
@@ -180,8 +188,6 @@
 
   var profcondInitializeRules = function profcondInitializeRules() {
     for (var ruleName in CRM.vars.profcond.eventConfig) {
-
-
       var rule = CRM.vars.profcond.eventConfig[ruleName];
       var ruleClass = 'profcond-has-rule_' + ruleName;
       for (var conditionType in rule.conditions) {
@@ -189,15 +195,30 @@
         for (var i in conditions) {
           profcondApplyRule(conditionType, conditions, rule.states);
           if (ruleName != 'onload') {
-            if (!CRM.$('#' + conditions[i].id).hasClass(ruleClass)) {
-              CRM.$('#' + conditions[i].id).change({'conditionType': conditionType, 'conditions': conditions, 'states': rule.states}, profcondHandleChange);
-              CRM.$('#' + conditions[i].id).addClass(ruleClass);
+            var el = profcondGetConditionElement(conditions[i]);
+            if (el.is('input[type="radio"]')) {
+              // If this is a radio button, we need to listen on all like-named
+              // radios, so define el that way.
+              el = CRM.$('input[type="radio"][name="' + el.attr('name') + '"]');
+            }
+            if (!el.hasClass(ruleClass)) {
+              el.change({'conditionType': conditionType, 'conditions': conditions, 'states': rule.states}, profcondHandleChange);
+              el.addClass(ruleClass);
             }
           }
         }
       }
     }
+  };
 
+  var profcondGetConditionElement = function profcondGetConditionElement(condition) {
+    var el;
+    if (typeof condition.id != 'undefined') {
+      el = CRM.$('#' + condition.id);
+    } else if (typeof condition.selector != 'undefined') {
+      el = CRM.$(condition.selector);
+    }
+    return el;
   };
 
   var profcondHandleChange = function profcondHandleChange(e) {
@@ -205,7 +226,8 @@
   };
 
   var profcondApplyRule = function profcondApplyRule(conditionType, conditions, states) {
-    if (profcondTestCondition(conditionType, conditions)) {
+    var pass = profcondTestCondition(conditionType, conditions);
+    if (pass) {
       profcondApplyStates(states.pass);
     } else {
       profcondApplyStates(states.fail);
