@@ -118,6 +118,7 @@
         case 'checkbox':
         case 'radio':
           el.triggerHandler('click');
+          el.triggerHandler('change');
           break;
         case 'text':
           el.triggerHandler('keyup');
@@ -205,7 +206,7 @@
               el = CRM.$('input[type="radio"][name="' + el.attr('name') + '"]');
             }
             if (!el.hasClass(ruleClass)) {
-              el.change({'conditionType': conditionType, 'conditions': conditions, 'states': rule.states}, profcondHandleChange);
+              el.change({'ruleClass': ruleClass, 'conditionType': conditionType, 'conditions': conditions, 'states': rule.states}, profcondHandleChange);
               el.addClass(ruleClass);
             }
           }
