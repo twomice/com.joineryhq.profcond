@@ -56,7 +56,7 @@
       // in which case do nothing and return.
       return;
     }
-    var state;
+    var state = {};
     if (typeof states.selectors != 'undefined') {
       for (var selector in states.selectors) {
         state = states.selectors[selector];
@@ -139,6 +139,9 @@
     var passes = 0;
     var val;
     for (var i in conditions) {
+      if (!conditions.hasOwnProperty(i)) {
+        continue;
+      }
       var conditionPass = false;
       var condition = conditions[i];
       var el = profcondGetConditionElement(condition);
@@ -192,10 +195,10 @@
       var ruleClass = 'profcond-has-rule_' + ruleName;
       for (var conditionType in rule.conditions) {
         var conditions = rule.conditions[conditionType];
-        for (var i in conditions) {
+        CRM.$.each(conditions, function(i, condition) {
           profcondApplyRule(conditionType, conditions, rule.states);
           if (ruleName != 'onload') {
-            var el = profcondGetConditionElement(conditions[i]);
+            var el = profcondGetConditionElement(condition);
             if (el.is('input[type="radio"]')) {
               // If this is a radio button, we need to listen on all like-named
               // radios, so define el that way.
@@ -206,7 +209,7 @@
               el.addClass(ruleClass);
             }
           }
-        }
+        });
       }
     }
   };
