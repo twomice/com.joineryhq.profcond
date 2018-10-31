@@ -1,3 +1,4 @@
+
 # CiviCRM Profile Conditionals
 
 This civicrm extension adds support for dynamic in-page behaviors based on changes
@@ -219,3 +220,22 @@ For these values of [state-property], the possible [state-property] values are:
 ## More examples
 A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).
 
+## FAQS
+1. **What about wildcards? I want to apply the same rules to several different events.**  
+    Wldcards are not supported yet, but you could do something like this:  
+    ```
+    $eventsConfig = array(
+      // whatever
+    );
+    
+    $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
+      'event' => array(
+        '81' => $eventsConfig,
+        '82' => $eventsConfig,
+        '83' => $eventsConfig,
+      ),
+    ); 
+    ```
+    
+2. **I want to conditionally display *and require* a field. How can I do that?**  
+   Configure the two fields as required within the profile. Use this extension to show/hide them according to your own rules. If this extension hides a required field, it will also ensure that the field is not required when hidden.
