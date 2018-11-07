@@ -10,14 +10,24 @@ use CRM_Profcond_ExtensionUtil as E;
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_buildForm
  */
 function profcond_civicrm_buildForm($formName, &$form) {
-  if ($formName == 'CRM_Event_Form_Registration_Register') {
-    $eventId = $form->get('id');
+  $useConditionals = FALSE;
+  switch ($formName) {
+    case 'CRM_Event_Form_Registration_Register':
+      $useConditionals = 'event';
+      break;
+
+    case 'CRM_Contribute_Form_Contribution_Main':
+      $useConditionals = 'contribution';
+      break;
+  }
+  if ($useConditionals) {
+    $pageId = $form->get('id');
     $config = _profcond_get_search_config();
     // Only take action if we're configured to act on this event.
-    if ($eventConfig = CRM_Utils_Array::value($eventId, $config['event'])) {
+    if ($pageConfig = CRM_Utils_Array::value($pageId, $config[$useConditionals])) {
       CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js');
       CRM_Core_Resources::singleton()->addVars('profcond', array(
-        'eventConfig' => $eventConfig,
+        'pageConfig' => $pageConfig,
         'formId' => $form->_attributes['id'],
       ));
       // Add a hidden field for transmitting names of dynamically hidden fields.

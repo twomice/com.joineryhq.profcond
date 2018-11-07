@@ -95,7 +95,6 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
     ),
   ),
   'contribution' => array(
-    // Contribution pages are not yet supported.
   ),
 );
 
