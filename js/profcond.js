@@ -92,6 +92,9 @@
     if (state.css) {
       el.css(state.css);
     }
+    if (state.html) {
+      el.html(state.html);
+    }
 
     if (typeof state.value != 'undefined') {
       el.val(state.value).change();
