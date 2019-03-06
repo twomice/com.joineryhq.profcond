@@ -161,6 +161,10 @@
         if (el.is(":checked")) {
           conditionPass = true;
         }
+      } else if (condition.op == 'is_set') {
+        if (el.val()) {
+          conditionPass = true;
+        }
       }
 
       if (conditionPass) {
@@ -256,5 +260,3 @@
   CRM.$('form#' + CRM.vars.profcond.formId).submit(profcondStoreHidden);
 
 })(CRM.$, CRM.ts('com.joineryhq.profcond'));
-
-
