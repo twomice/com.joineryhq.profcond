@@ -95,7 +95,6 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
     ),
   ),
   'contribution' => array(
-    // Contribution pages are not yet supported.
   ),
 );
 
@@ -195,6 +194,8 @@ The attribute of the given element to be changed. One of:
 
 * 'display'
 * 'properties'
+* 'css'
+* 'html'
 * 'attributes'
 * 'value'
 * 'before'
@@ -211,6 +212,8 @@ For these values of [state-property], the possible [state-property] values are:
   * 'hide': The element will be hidden with jQuery().hide().
   * 'show': The element will be shown with jQuery().show().
 * 'properties': An associative array of properties, to be applied to the element with jQuery().prop().
+* 'css': An associative array of properties, to be applied to the element with jQuery().css().
+* 'html': An associative array of properties, to be applied to the element with jQuery().html().
 * 'attributes': An associative array of attributes, to be applied to the element with jQuery().attr().
 * 'value': The value to which the element (which should be a form field) will be set, using jQuery().val().
 * 'before': The element will be relocated before the element indicated by this jQuery selector, with jQuery().insertBefore().

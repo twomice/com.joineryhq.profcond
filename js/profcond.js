@@ -92,6 +92,9 @@
     if (state.css) {
       el.css(state.css);
     }
+    if (state.html) {
+      el.html(state.html);
+    }
 
     if (typeof state.value != 'undefined') {
       el.val(state.value).change();
@@ -191,8 +194,8 @@
   };
 
   var profcondInitializeRules = function profcondInitializeRules() {
-    for (var ruleName in CRM.vars.profcond.eventConfig) {
-      var rule = CRM.vars.profcond.eventConfig[ruleName];
+    for (var ruleName in CRM.vars.profcond.pageConfig) {
+      var rule = CRM.vars.profcond.pageConfig[ruleName];
       var ruleClass = 'profcond-has-rule_' + ruleName;
       for (var conditionType in rule.conditions) {
         var conditions = rule.conditions[conditionType];
@@ -243,8 +246,8 @@
   cj("#priceset [price]").addClass('profcond-price-element');
 
   // Apply default state on page load.
-  if (CRM.vars.profcond.eventConfig.onload) {
-    profcondApplyStates(CRM.vars.profcond.eventConfig.onload);
+  if (CRM.vars.profcond.pageConfig.onload) {
+    profcondApplyStates(CRM.vars.profcond.pageConfig.onload);
   }
 
   profcondInitializeRules();
