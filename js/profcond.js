@@ -8,8 +8,8 @@
    */
   calculateTotalFee = function calculateTotalFee() {
     var totalFee = 0;
-    cj(".profcond-price-element[price]").each(function () {
-      totalFee = totalFee + cj(this).data('line_raw_total');
+    $(".profcond-price-element[price]").each(function () {
+      totalFee = totalFee + $(this).data('line_raw_total');
     });
     return totalFee;
   };
@@ -24,12 +24,12 @@
    */
   var profcondStoreHidden = function profcondStoreHidden(e) {
     var hiddenFields = [];
-    CRM.$('input:hidden, select:hidden, textarea:hidden').each(function (idx, el) {
+    $('input:hidden, select:hidden, textarea:hidden').each(function (idx, el) {
       // If this is a select2 base control, it will always be hidden. We only care
       // if the select2 itself is hidden.
-      if ((el.type == 'select-one' || el.type == 'select-multiple') && CRM.$(el).hasClass('crm-select2')) {
+      if ((el.type == 'select-one' || el.type == 'select-multiple') && $(el).hasClass('crm-select2')) {
         var select2id = 's2id_' + el.id;
-        if (CRM.$('#' + select2id).is(':hidden')) {
+        if ($('#' + select2id).is(':hidden')) {
           hiddenFields.push(el.name);
         }
       // If this is a datepicker base control, it will always be hidden. We only care
@@ -39,14 +39,14 @@
         ($(el).hasClass('crm-hidden-date') || el.hasAttribute('data-crm-datepicker'))
       ) {
         var datepickerid = $(el).siblings('input.hasDatepicker').attr('id');
-        if (CRM.$('#' + datepickerid).is(':hidden')) {
+        if ($('#' + datepickerid).is(':hidden')) {
           hiddenFields.push(el.name);
         }
       } else if (el.name.length) {
         hiddenFields.push(el.name);
       }
     });
-    CRM.$('#profcond_hidden_fields').val(JSON.stringify(hiddenFields));
+    $('#profcond_hidden_fields').val(JSON.stringify(hiddenFields));
   };
 
 
@@ -184,10 +184,10 @@
     var el;
     switch (type) {
       case 'selector':
-        el = CRM.$(id);
+        el = $(id);
         break;
       case 'profile':
-        el = CRM.$('fieldset.crm-profile-id-' + id);
+        el = $('fieldset.crm-profile-id-' + id);
         break;
     }
     return el;
@@ -199,14 +199,14 @@
       var ruleClass = 'profcond-has-rule_' + ruleName;
       for (var conditionType in rule.conditions) {
         var conditions = rule.conditions[conditionType];
-        CRM.$.each(conditions, function(i, condition) {
+        $.each(conditions, function(i, condition) {
           profcondApplyRule(conditionType, conditions, rule.states);
           if (ruleName != 'onload') {
             var el = profcondGetConditionElement(condition);
             if (el.is('input[type="radio"]')) {
               // If this is a radio button, we need to listen on all like-named
               // radios, so define el that way.
-              el = CRM.$('input[type="radio"][name="' + el.attr('name') + '"]');
+              el = $('input[type="radio"][name="' + el.attr('name') + '"]');
             }
             if (!el.hasClass(ruleClass)) {
               el.change({'ruleClass': ruleClass, 'conditionType': conditionType, 'conditions': conditions, 'states': rule.states}, profcondHandleChange);
@@ -221,9 +221,9 @@
   var profcondGetConditionElement = function profcondGetConditionElement(condition) {
     var el;
     if (typeof condition.id != 'undefined') {
-      el = CRM.$('#' + condition.id);
+      el = $('#' + condition.id);
     } else if (typeof condition.selector != 'undefined') {
-      el = CRM.$(condition.selector);
+      el = $(condition.selector);
     }
     return el;
   };
@@ -243,7 +243,7 @@
 
   // First thing, add .profcond-price-element class to all price fields, so we can total them
   // with our custom calculateTotalFee() function.
-  cj("#priceset [price]").addClass('profcond-price-element');
+  $("#priceset [price]").addClass('profcond-price-element');
 
   // Apply default state on page load.
   if (CRM.vars.profcond.pageConfig.onload) {
@@ -253,8 +253,6 @@
   profcondInitializeRules();
 
   // Add submit handler to form, to pass compiled list of hidden fields with submission.
-  CRM.$('form#' + CRM.vars.profcond.formId).submit(profcondStoreHidden);
+  $('form#' + CRM.vars.profcond.formId).submit(profcondStoreHidden);
 
 })(CRM.$, CRM.ts('com.joineryhq.profcond'));
-
-
