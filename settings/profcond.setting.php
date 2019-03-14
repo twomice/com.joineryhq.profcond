@@ -9,7 +9,7 @@
  * Settings metadata file
  */
 return [
-  'menubar_position' => [
+  'com.joineryhq.profcond' => [
     'group_name' => 'com.joineryhq.profcond',
     'name' => 'com.joineryhq.profcond',
     'type' => 'Array',
