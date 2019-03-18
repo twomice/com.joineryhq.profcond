@@ -13,6 +13,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
   $useConditionals = FALSE;
   switch ($formName) {
     case 'CRM_Event_Form_Registration_Register':
+    case 'CRM_Event_Form_Registration_AdditionalParticipant':
       $useConditionals = 'event';
       break;
 
