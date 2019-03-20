@@ -6,7 +6,8 @@ to form fields in CiviCRM forms, including showing/hiding form elements and
 setting field values.
 
 Current support includes the following forms:
-  * event registration (/civicrm/event/register)
+  * event registration (/civicrm/event/register), including "additional participant" form
+  * contribution page (/civicrm/contribute/transact)
 
 Patch welcome for other forms.
 
