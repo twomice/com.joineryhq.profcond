@@ -1,10 +1,4 @@
 <?php
-/**
- *
- * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2013
- *
- */
 /*
  * Settings metadata file
  */
