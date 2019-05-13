@@ -17,7 +17,7 @@ git clone https://github.com/twomice/com.joineryhq.profcond in your local extens
 
 ## Configuration
 
-This extension has no browser-basd configuration form within CiviCRM. Configuration
+This extension has no browser-based configuration form within CiviCRM. Configuration
 is by PHP arrays in code within the civicrm.settings.php file.
 
 You need to add in your civicrm.settings.php a new config variable
