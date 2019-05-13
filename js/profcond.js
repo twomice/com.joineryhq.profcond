@@ -1,10 +1,15 @@
 (function ($, ts) {
 
+  // Define special handler for select2 elements.
+  var ps2 = new profcondSelect2($);
 
   /**
    * Override CiviCRM's calculateTotalFee(); we want to calculate for all
    * price fields, which we may have moved outside of #priceset.
    * Calculate the total fee for the visible priceset.
+   *
+   * Because we're overriding a global-scope function, do not scope it
+   * with `var` here.
    */
   calculateTotalFee = function calculateTotalFee() {
     var totalFee = 0;
@@ -13,7 +18,6 @@
     });
     return totalFee;
   };
-
 
 
   /**
@@ -74,13 +78,18 @@
   var profcondApplyState = function profcondApplyState(id, type, state) {
     var el = profcondGetEl(id, type);
     if (state.display) {
-      switch (state.display) {
-        case 'show':
-          el.show();
-          break;
-        case 'hide':
-          el.hide();
-          break;
+      if (ps2.elementIsSelect2Option(el)) {
+        ps2.setDisplayState(el, state.display);
+      }
+      else {
+        switch (state.display) {
+          case 'show':
+            el.show();
+            break;
+          case 'hide':
+            el.hide();
+            break;
+        }
       }
     }
     if (state.properties) {

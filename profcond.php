@@ -26,7 +26,11 @@ function profcond_civicrm_buildForm($formName, &$form) {
     $config = _profcond_get_search_config();
     // Only take action if we're configured to act on this event.
     if ($pageConfig = CRM_Utils_Array::value($pageId, CRM_Utils_Array::value($useConditionals, $config))) {
-      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js');
+      // Add JS Class file for select2 support class. Ensure its weight is lower than profcond.js
+      // so that the class is actually loaded before it's invoked in profcond.js.
+      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcondSelect2.js', 1);
+      // Add javascript file to handle the bulk of profcond rules processing.
+      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js', 11);
       CRM_Core_Resources::singleton()->addVars('profcond', array(
         'pageConfig' => $pageConfig,
         'formId' => $form->_attributes['id'],
