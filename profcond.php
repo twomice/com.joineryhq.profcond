@@ -13,6 +13,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
   $useConditionals = FALSE;
   switch ($formName) {
     case 'CRM_Event_Form_Registration_Register':
+    case 'CRM_Event_Form_Registration_AdditionalParticipant':
       $useConditionals = 'event';
       break;
 
@@ -24,8 +25,12 @@ function profcond_civicrm_buildForm($formName, &$form) {
     $pageId = $form->get('id');
     $config = _profcond_get_search_config();
     // Only take action if we're configured to act on this event.
-    if ($pageConfig = CRM_Utils_Array::value($pageId, $config[$useConditionals])) {
-      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js');
+    if ($pageConfig = CRM_Utils_Array::value($pageId, CRM_Utils_Array::value($useConditionals, $config))) {
+      // Add JS Class file for select2 support class. Ensure its weight is lower than profcond.js
+      // so that the class is actually loaded before it's invoked in profcond.js.
+      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcondSelect2.js', 1);
+      // Add javascript file to handle the bulk of profcond rules processing.
+      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js', 11);
       CRM_Core_Resources::singleton()->addVars('profcond', array(
         'pageConfig' => $pageConfig,
         'formId' => $form->_attributes['id'],
@@ -73,8 +78,10 @@ function profcond_civicrm_buildForm($formName, &$form) {
  * Implements hook_civicrm_validateForm().
  */
 function profcond_civicrm_validateForm($formName, &$fields, &$files, &$form, &$errors) {
-  // Re-add tempoarily unrequired fields to the list of required fields.
-  $form->_required = array_merge($form->_required, $form->_attributes['temporarilyUnrequiredFields']);
+  if (array_key_exists('temporarilyUnrequiredFields', $form->_attributes)) {
+    // Re-add tempoarily unrequired fields to the list of required fields.
+    $form->_required = array_merge($form->_required, $form->_attributes['temporarilyUnrequiredFields']);
+  }
 }
 
 /**
