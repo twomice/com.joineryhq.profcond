@@ -137,13 +137,12 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
 ```
 
 ### [page-type]
-Must be 'event' to indicate that this section applies to event registration pages.
-In future, other values may be supported, such as 'contribution' for contribution
-pages.
+Must be 'event' or 'contribution' to indicate that this section applies to event registration pages
+or contribution pages.
+In future, other values may be supported.
 
 ### [page-id]
-Must be an event ID. Rules in this section will only be applied to the events with
-this ID.
+Must be an event or contribution page ID. Rules in this section will only be applied to this page-type and ID.
 
 ### [rule-name]
 Must be a unique string within this page-type/page-id section.
@@ -168,6 +167,7 @@ The type of comparison to be performed for this field. One of:
 * value_is: The field must have the given value for the condition to pass.
 * value_is_one_of: The field must have any of the given values for the condition to pass.
 * is_checked: The field must be checked to pass (appropriate for checkbox and radio elements).
+* is_set: The field must have a value for the condition to pass.
 
 ### [field-value]
 The value to be compared in this condition.
@@ -225,21 +225,21 @@ For these values of [state-property], the possible [state-property] values are:
 A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).
 
 ## FAQs
-1. **What about wildcards? I want to apply the same rules to several different events.**  
-    Wldcards are not supported yet, but you could do something like this:  
+1. **What about wildcards? I want to apply the same rules to several different events.**
+    Wildcards are not supported yet, but you could do something like this:
     ```
     $eventsConfig = array(
       // whatever
     );
-    
+
     $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
       'event' => array(
         '81' => $eventsConfig,
         '82' => $eventsConfig,
         '83' => $eventsConfig,
       ),
-    ); 
+    );
     ```
-    
-2. **I want to conditionally display *and require* a field. How can I do that?**  
+
+2. **I want to conditionally display *and require* a field. How can I do that?**
    Configure the two fields as required within the profile. Use this extension to show/hide them according to your own rules. If this extension hides a required field, it will also ensure that the field is not required when hidden.

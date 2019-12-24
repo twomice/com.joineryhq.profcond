@@ -170,6 +170,10 @@
         if (el.is(":checked")) {
           conditionPass = true;
         }
+      } else if (condition.op == 'is_set') {
+        if (el.val()) {
+          conditionPass = true;
+        }
       }
 
       if (conditionPass) {
