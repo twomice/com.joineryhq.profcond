@@ -163,7 +163,8 @@
           conditionPass = true;
         }
       } else if (condition.op == 'value_is_one_of') {
-        if (condition.value.indexOf(el.val()) > -1) {
+        var elVal = el.val();
+        if (condition.value.indexOf(elVal) > -1) {
           conditionPass = true;
         }
       } else if (condition.op == 'is_checked') {

@@ -23,14 +23,17 @@ function profcond_civicrm_buildForm($formName, &$form) {
   }
   if ($useConditionals) {
     $pageId = $form->get('id');
-    $config = _profcond_get_search_config();
-    // Only take action if we're configured to act on this event.
-    if ($pageConfig = CRM_Utils_Array::value($pageId, CRM_Utils_Array::value($useConditionals, $config))) {
+    $config = _profcond_get_search_config($useConditionals, $pageId);
+
+    // Only take action if we're configured to act on this page (or all pages).
+    $pageConfig = $config[$useConditionals]['all'] ?: [];
+    $pageConfig = array_merge($pageConfig, CRM_Utils_Array::value($pageId, $config[$useConditionals], []));
+    if ($pageConfig) {
       // Add JS Class file for select2 support class. Ensure its weight is lower than profcond.js
       // so that the class is actually loaded before it's invoked in profcond.js.
       CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcondSelect2.js', 1);
       // Add javascript file to handle the bulk of profcond rules processing.
-      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js', 11);
+      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js', 11, 'page-footer');
       CRM_Core_Resources::singleton()->addVars('profcond', array(
         'pageConfig' => $pageConfig,
         'formId' => $form->_attributes['id'],
@@ -231,6 +234,14 @@ function profcond_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   ));
   _profcond_civix_navigationMenu($menu);
   } // */
-function _profcond_get_search_config() {
-  return CRM_Core_BAO_Setting::getItem(NULL, 'com.joineryhq.profcond');
+
+function _profcond_get_search_config($pageType, $entityId) {
+  $config = CRM_Core_BAO_Setting::getItem(NULL, 'com.joineryhq.profcond');
+  // Invoke hook_civicrm_profcond_alterConfig
+  $null = NULL;
+  CRM_Utils_Hook::singleton()->invoke(['config', 'pageType', 'entityId'], $config, $pageType, $entityId,
+    $null, $null, $null,
+    'civicrm_profcond_alterConfig'
+  );
+  return $config;
 }

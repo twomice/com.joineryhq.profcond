@@ -1,7 +1,7 @@
 
 # CiviCRM Profile Conditionals
 
-This civicrm extension adds support for dynamic in-page behaviors based on changes
+This CiviCRM extension adds support for dynamic in-page behaviors based on changes
 to form fields in CiviCRM forms, including showing/hiding form elements and
 setting field values.
 
@@ -142,7 +142,10 @@ or contribution pages.
 In future, other values may be supported.
 
 ### [page-id]
-Must be an event or contribution page ID. Rules in this section will only be applied to this page-type and ID.
+Must be one these:
+* An event ID or contribution page ID. Rules in this section will only be applied to this page-type and ID.
+* The string `all`, to apply the rule to all events (or contribution pages).  If you specify both `all`
+and a page ID, the page ID settings will override the `all` settings.
 
 ### [rule-name]
 Must be a unique string within this page-type/page-id section.
@@ -224,9 +227,60 @@ For these values of [state-property], the possible [state-property] values are:
 ## More examples
 A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).
 
+## Developer hooks
+This extension provides `hook_civicrm_profcond_alterConfig()`, which can be implemented like so:
+```
+/**
+ * Implements hook_civicrm_profcond_alterConfig().
+ * @link https://github.com/twomice/namelessprogress#developer-hooks
+ */
+function myextension_civicrm_profcond_alterConfig(&$config, $pageType, $entityId) {
+  // $config contains the full value of $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'];
+  //    change as needed.
+  // $pageType will be either 'contribution' or 'event'.
+  // $entityId will be the current event ID or contribution page ID.
+
+  // If we're on an event registration page, and my custom decider says to do so,
+  // create a rule for showing/hiding profile id=1.
+  if ($pageType == 'event') {
+    if (_myextensionWantsToAlterProfCondForEvent($entityId)) {
+      $config['event'][$entityId]['myextension_1'] = [
+        'conditions' => [
+          'all_of' => [
+            [
+              'id' => 'myExtensionCustomField',
+              'op' => 'value_is_one_of',
+              'value' => [1, 2, 3, 4],
+            ],
+          ],
+        ],
+        'states' => [
+          'pass' => [
+            'profiles' => [
+              1 => [
+                'display' => 'show',
+              ],
+            ],
+          ],
+          'fail' => [
+            'profiles' => [
+              1 => [
+                'display' => 'hide',
+              ],
+            ],
+          ],
+        ],
+      ];
+    }
+  }
+}
+```
+
 ## FAQs
-1. **What about wildcards? I want to apply the same rules to several different events.**
-    Wildcards are not supported yet, but you could do something like this:
+1. **What about wildcards? I want to apply the same rules to several different events.**  
+    Use the string `all` as the event ID or contribution page ID; see notes on `[page-id]`, above.
+
+    Alternately, you could do something like this for a more specific set of events (or the equivalent, for contribution pages):
     ```
     $eventsConfig = array(
       // whatever
@@ -241,5 +295,5 @@ A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).
     );
     ```
 
-2. **I want to conditionally display *and require* a field. How can I do that?**
+2. **I want to conditionally display *and require* a field. How can I do that?**  
    Configure the two fields as required within the profile. Use this extension to show/hide them according to your own rules. If this extension hides a required field, it will also ensure that the field is not required when hidden.
