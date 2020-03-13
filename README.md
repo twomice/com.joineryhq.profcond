@@ -232,7 +232,7 @@ This extension provides `hook_civicrm_profcond_alterConfig()`, which can be impl
 ```
 /**
  * Implements hook_civicrm_profcond_alterConfig().
- * @link https://github.com/twomice/namelessprogress#developer-hooks
+ * @link https://twomice.github.io/com.joineryhq.profcond/#developer-hooks
  */
 function myextension_civicrm_profcond_alterConfig(&$config, $pageType, $entityId) {
   // $config contains the full value of $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'];
