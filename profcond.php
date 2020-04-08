@@ -34,10 +34,21 @@ function profcond_civicrm_buildForm($formName, &$form) {
       CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcondSelect2.js', 1);
       // Add javascript file to handle the bulk of profcond rules processing.
       CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js', 11, 'page-footer');
-      CRM_Core_Resources::singleton()->addVars('profcond', array(
+      $jsVars = array(
         'pageConfig' => $pageConfig,
         'formId' => $form->_attributes['id'],
-      ));
+      );
+      if ($formName == 'CRM_Event_Form_Registration_AdditionalParticipant'){
+        $submittedParticipantValues = [];
+        foreach ($form->getVar('_params') as $key => $params) {
+          unset($params['credit_card_number']);
+          unset($params['credit_card_exp_date']);
+          unset($params['credit_card_type']);
+          $submittedParticipantValues[$key] = $params;
+        }
+        $jsVars['submittedParticipantValues'] = $submittedParticipantValues;
+      }
+      CRM_Core_Resources::singleton()->addVars('profcond', $jsVars);
       // Add a hidden field for transmitting names of dynamically hidden fields.
       $form->add('hidden', 'profcond_hidden_fields', NULL, array('id' => 'profcond_hidden_fields'));
       // Take specific action when form has been submitted.

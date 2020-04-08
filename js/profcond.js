@@ -157,23 +157,26 @@
       }
       var conditionPass = false;
       var condition = conditions[i];
-      var el = profcondGetConditionElement(condition);
-      if (condition.op == 'value_is') {
-        if (el.val() == condition.value) {
-          conditionPass = true;
-        }
-      } else if (condition.op == 'value_is_one_of') {
-        var elVal = el.val();
-        if (condition.value.indexOf(elVal) > -1) {
-          conditionPass = true;
-        }
-      } else if (condition.op == 'is_checked') {
+      if (condition.op == 'is_checked') {
+        var el = profcondGetConditionElement(condition);
         if (el.is(":checked")) {
           conditionPass = true;
         }
-      } else if (condition.op == 'is_set') {
-        if (el.val()) {
-          conditionPass = true;
+      }
+      else {
+        var val = profcondGetConditionValue(condition);
+        if (condition.op == 'value_is') {
+          if (val == condition.value) {
+            conditionPass = true;
+          }
+        } else if (condition.op == 'value_is_one_of') {
+          if (condition.value.indexOf(val) > -1) {
+            conditionPass = true;
+          }
+        } else if (condition.op == 'is_set') {
+          if (val) {
+            conditionPass = true;
+          }
         }
       }
 
@@ -217,6 +220,9 @@
           profcondApplyRule(conditionType, conditions, rule.states);
           if (ruleName != 'onload') {
             var el = profcondGetConditionElement(condition);
+            if (!el) {
+              return;
+            }
             if (el.is('input[type="radio"]')) {
               // If this is a radio button, we need to listen on all like-named
               // radios, so define el that way.
@@ -233,13 +239,39 @@
   };
 
   var profcondGetConditionElement = function profcondGetConditionElement(condition) {
-    var el;
+    var el = false;
     if (typeof condition.id != 'undefined') {
       el = $('#' + condition.id);
     } else if (typeof condition.selector != 'undefined') {
       el = $(condition.selector);
     }
     return el;
+  };
+
+  var profcondGetConditionValue = function profcondGetConditionValue(condition) {
+    if (typeof condition.variable != 'undefined') {
+      if (Array.isArray(condition.variable)) {
+        var conditionVar = window;
+        var conditionVarStringName = 'window';
+        for (i in condition.variable) {
+          var property = condition.variable[i];
+          conditionVarStringName += '.' + property;
+          if (!conditionVar.hasOwnProperty(property)) {
+            console.log('Config references unknown javascript variable', conditionVarStringName);
+            return;
+          }
+          conditionVar = conditionVar[property];
+        }
+        return conditionVar;
+      }
+      else {
+        return window[condition.variable];
+      }
+    }
+    else {
+      el = profcondGetConditionElement(condition);
+      return el.val();
+    }
   };
 
   var profcondHandleChange = function profcondHandleChange(e) {

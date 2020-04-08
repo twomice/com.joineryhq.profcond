@@ -113,9 +113,9 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
         'conditions' => array(
           '[condition-type]' => array(
             array(
-              'id' => '[field-id]',
+              '[subject-identifier-type]' => '[subject-identifier]',
               'op' => '[operator]',
-              'value' => '[field-value]',
+              'value' => '[test-value]',
             ),
           )
         ),
@@ -148,8 +148,11 @@ Must be one these:
 and a page ID, the page ID settings will override the `all` settings.
 
 ### [rule-name]
-Must be a unique string within this page-type/page-id section.
-Must also be suitable for use as a CSS class.
+* Must be a unique string within this page-type/page-id section.
+* Must also be suitable for use as a CSS class.
+* The special name 'onload' defines a rule which fires upon page load;  
+  its key is 'onload' and its value is an array in the form of [condition-success];  
+  upon page load, the state described in this rule is applied unconditionally.
 
 ### [condition-type]
 A string indicating how the conditions should be joined. One of:
@@ -161,18 +164,32 @@ It's recommended to use one or the other. Nesting of conditions is not supported
 Thus, under 'conditions', you should have one array element, keyed to either `any_of`
 or `all_of`, containing any number of conditions.
 
-### [field-id]
-The HTML "id" attribute of the field to be tested in this condition.
+### [subject-identifier-type]
+One of:
+* id: if the item being evaluated is a DOM element on the page.
+* selector: if the item being evaluated is a DOM element on the page.
+* variable: if the item being evaluated is a JavaScript variable.
+
+### [subject-identifier]
+One of these, depending on the value of [subject-identifier-type]:
+* If [subject-identifier-type] is 'id': The HTML "id" attribute of the field to be tested in this condition.
+* If [subject-identifier-type] is 'selector': A jQuery selector describing the field to be tested in this condition.
+* If [subject-identifier-type] is 'variable': One of these:
+  * String: name of a global variable (property of the window object)
+  * Array: ordered array of nested variable names within a global object variable (property of the window object)  
+    Example:
+    * `['CRM','vars','myextension','foobar',0]` to test the value of window.CRM.vars.myextension.foobar[0]
 
 ### [operator]
 The type of comparison to be performed for this field. One of:
 
-* value_is: The field must have the given value for the condition to pass.
-* value_is_one_of: The field must have any of the given values for the condition to pass.
-* is_checked: The field must be checked to pass (appropriate for checkbox and radio elements).
-* is_set: The field must have a value for the condition to pass.
+* value_is: The subject of [subject-identifier] must have the given [test-value] value for the condition to pass.
+* value_is_one_of: The subject of [subject-identifier] must have any of the given [test-value] values for the condition to pass.
+* is_set: The subject of [subject-identifier] must have a value for the condition to pass.
+* is_checked: The subject of [subject-identifier] must be checked to pass (appropriate for checkbox and radio elements);  
+  only appropriate where [subject-identifier-type] is 'id' or 'selector'.
 
-### [field-value]
+### [test-value]
 The value to be compared in this condition.
 
 ### [condition-success]
