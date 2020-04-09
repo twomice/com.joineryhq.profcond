@@ -110,6 +110,11 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
   '[page-type]' => array(
     [page-id] => array (
       '[rule-name]' => array(
+        'limit' => array(
+          'formId' => array(
+            'pattern' => [limit-regex-pattern],
+            'flags' => [limit-regex-flags],
+        ),
         'conditions' => array(
           '[condition-type]' => array(
             array(
@@ -154,6 +159,26 @@ and a page ID, the page ID settings will override the `all` settings.
   its key is 'onload' and its value is an array in the form of [condition-success];  
   upon page load, the state described in this rule is applied unconditionally.
 
+### "limit"
+Optional array defining a regular expression that will limit the forms on which
+this rule is applied. Because [page-type] and [page-id] already facilitate limiting
+rules to specific events and contribution pages, this "limit" array is only expected
+to be useful in the case of multi-participant event registrations, in which the
+primary participant form has the formId "Register", and additional participant
+forms have the formId "Participant_1", "Participant_2", etc. The "limit" definition
+provides a way to specify that certain rules should only apply on the "Register" formId,
+or one or more of the additional participant forms.
+
+### [limit-regex-pattern]
+String. A pattern to be used in `new RegExp('[limit-regex-pattern]', '[limit-regex-flags]').
+If the regular expression does not matche the formId value (see "limit"), this rule
+will not be used at all on the page.
+
+### [limit-regex-flags]
+String. A pattern to be used in `new RegExp('[limit-regex-pattern]', '[limit-regex-flags]').
+Optional, and probably not needed in any case; but see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Advanced_searching_with_flags
+for more on regular expression flags.
+
 ### [condition-type]
 A string indicating how the conditions should be joined. One of:
 * any_of: If any condition is met, the conditions are considered passing.
@@ -168,7 +193,8 @@ or `all_of`, containing any number of conditions.
 One of:
 * id: if the item being evaluated is a DOM element on the page.
 * selector: if the item being evaluated is a DOM element on the page.
-* variable: if the item being evaluated is a JavaScript variable.
+* variable: if the item being evaluated is a JavaScript variable. (See "Variables" for
+  more information about the JavaScript variables defined by Profile Conditionals.)
 
 ### [subject-identifier]
 One of these, depending on the value of [subject-identifier-type]:
@@ -240,6 +266,20 @@ For these values of [state-property], the possible [state-property] values are:
 * 'before': The element will be relocated before the element indicated by this jQuery selector, with jQuery().insertBefore().
 * 'after': The element will be relocated after the element indicated by this jQuery selector, with jQuery().insertAfter().
 * 'is_price_change': TRUE if this field is a price field and changing it should update the total amount. Defaults to FALSE.
+
+## Variables
+ProfileConditionals defines these JavaScript variables in CRM.vars.profcond:
+
+* pageConfig: the full array of rules as configured for the current [page-type] and [page-id].
+* formId: the `id` attribute of the CiviCRM form being displayed.
+* submittedParticipantValues: defined on "additional participantn" forms in a multi-participant event registration;
+  an array of the values submitted values (omitting credit card details) from the
+  participants submitted on earlier forms. `submittedParticipantValues[0]` contains
+  values submitted for the primary participant, `submittedParticipantValues[1]` for
+  the first additional participant, etc. This variable, when referenced by a condition
+  in which [subject-identifier] = 'variable', optionally in conjunction with a rule "limit",
+  allows definition of rules which affect behavior on an additional participant
+  form based on selections in earlier participant forms.
 
 ## More examples
 A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).

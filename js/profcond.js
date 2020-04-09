@@ -213,6 +213,15 @@
   var profcondInitializeRules = function profcondInitializeRules() {
     for (var ruleName in CRM.vars.profcond.pageConfig) {
       var rule = CRM.vars.profcond.pageConfig[ruleName];
+      if (typeof rule.limit == 'object' && typeof rule.limit.formId == 'object') {
+        if (typeof rule.limit.formId.pattern == 'string') {
+          regex = new RegExp(rule.limit.formId.pattern, rule.limit.formId.flags);
+          if (! regex.test(CRM.vars.profcond.formId)) {
+            console.log('Rule limit does not match formId', CRM.vars.profcond.formId, 'skipping rule', ruleName);
+            continue;
+          }
+        }
+      }
       var ruleClass = 'profcond-has-rule_' + ruleName;
       for (var conditionType in rule.conditions) {
         var conditions = rule.conditions[conditionType];
