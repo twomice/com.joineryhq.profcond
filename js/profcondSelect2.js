@@ -90,4 +90,4 @@ var profcondSelect2 = function profcondSelect2($) {
 
   // Add an event handler for the select2 "open" event on all select2 elements.
   $('select.crm-select2').on('select2-open', {'ps2': this}, this.applyDisplayState);
-}
+};
