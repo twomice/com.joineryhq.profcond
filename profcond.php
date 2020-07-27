@@ -2,7 +2,7 @@
 
 require_once 'profcond.civix.php';
 
-// use CRM_Profcond_ExtensionUtil as E;
+use CRM_Profcond_ExtensionUtil as E;
 
 /**
  * Implements hook_civicrm_buildForm().
