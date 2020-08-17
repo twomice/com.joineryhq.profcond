@@ -164,7 +164,7 @@
         }
       }
       else {
-        var val = profcondGetConditionValue(condition);
+        val = profcondGetConditionValue(condition);
         if (condition.op == 'value_is') {
           if (val == condition.value) {
             conditionPass = true;
@@ -262,7 +262,7 @@
       if (Array.isArray(condition.variable)) {
         var conditionVar = window;
         var conditionVarStringName = 'window';
-        for (i in condition.variable) {
+        for (var i in condition.variable) {
           var property = condition.variable[i];
           conditionVarStringName += '.' + property;
           if (!conditionVar.hasOwnProperty(property)) {

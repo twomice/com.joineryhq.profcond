@@ -38,7 +38,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
         'pageConfig' => $pageConfig,
         'formId' => $form->_attributes['id'],
       );
-      if ($formName == 'CRM_Event_Form_Registration_AdditionalParticipant'){
+      if ($formName == 'CRM_Event_Form_Registration_AdditionalParticipant') {
         $submittedParticipantValues = [];
         foreach ($form->getVar('_params') as $key => $params) {
           unset($params['credit_card_number']);
@@ -76,15 +76,15 @@ function profcond_civicrm_buildForm($formName, &$form) {
   }
   // TODO: On display of confirmation page, hide fields that are hidden, and then hide any empty profiles.
   // elseif ($formName == 'CRM_Event_Form_Registration_Confirm' && !$form->_flagSubmitted) {
-    // Retrieve list of hidden field titles (and their group titles?), and remove
-    // them. These are built from $tpl->_tpl_vars['primaryParticipantProfile'],
-    // so you can simply unset them in that array and they won't display.
-    // May also need to do something similar for "additional participant profile"
-    // fields.
-    //
-    // $tpl = CRM_Core_Smarty::singleton();
-    // dsm($tpl->_tpl_vars['primaryParticipantProfile'], 'vars[primaryParticipantProfile]');
-    // unset($tpl->_tpl_vars['primaryParticipantProfile']['CustomPost'][15]['Participant Role']);
+  // Retrieve list of hidden field titles (and their group titles?), and remove
+  // them. These are built from $tpl->_tpl_vars['primaryParticipantProfile'],
+  // so you can simply unset them in that array and they won't display.
+  // May also need to do something similar for "additional participant profile"
+  // fields.
+  //
+  // $tpl = CRM_Core_Smarty::singleton();
+  // dsm($tpl->_tpl_vars['primaryParticipantProfile'], 'vars[primaryParticipantProfile]');
+  // unset($tpl->_tpl_vars['primaryParticipantProfile']['CustomPost'][15]['Participant Role']);
   // }
 }
 
@@ -224,28 +224,31 @@ function profcond_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * Implements hook_civicrm_preProcess().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
- *
-  function profcond_civicrm_preProcess($formName, &$form) {
+ */
+// function profcond_civicrm_preProcess($formName, &$form) {
 
-  } // */
+// } // */
 
 /**
  * Implements hook_civicrm_navigationMenu().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- *
-  function profcond_civicrm_navigationMenu(&$menu) {
-  _profcond_civix_insert_navigation_menu($menu, NULL, array(
-  'label' => E::ts('The Page'),
-  'name' => 'the_page',
-  'url' => 'civicrm/the-page',
-  'permission' => 'access CiviReport,access CiviContribute',
-  'operator' => 'OR',
-  'separator' => 0,
-  ));
-  _profcond_civix_navigationMenu($menu);
-  } // */
+ */
+// function profcond_civicrm_navigationMenu(&$menu) {
+// _profcond_civix_insert_navigation_menu($menu, NULL, array(
+// 'label' => E::ts('The Page'),
+// 'name' => 'the_page',
+// 'url' => 'civicrm/the-page',
+// 'permission' => 'access CiviReport,access CiviContribute',
+// 'operator' => 'OR',
+// 'separator' => 0,
+// ));
+// _profcond_civix_navigationMenu($menu);
+// } // */
 
+/**
+ *
+ */
 function _profcond_get_search_config($pageType, $entityId) {
   $config = CRM_Core_BAO_Setting::getItem(NULL, 'com.joineryhq.profcond');
   // Invoke hook_civicrm_profcond_alterConfig
