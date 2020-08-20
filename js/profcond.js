@@ -226,6 +226,16 @@
       for (var conditionType in rule.conditions) {
         var conditions = rule.conditions[conditionType];
         $.each(conditions, function(i, condition) {
+          // FIXME: calling profcondApplyRule() in this each loop seem to have the 
+          // effect of applying each rule multiple times, which is problematic 
+          // when the state is something like so:
+          // ...
+          // '<p>insert this text</p>' => ['before', '#theform']
+          // ...
+          // because the <p> gets inserted multiple times, which is surely
+          // not the intent.
+          // It's probably fine to move this directly above the $.each() loop,
+          // but that needs testing.
           profcondApplyRule(conditionType, conditions, rule.states);
           if (ruleName != 'onload') {
             var el = profcondGetConditionElement(condition);
