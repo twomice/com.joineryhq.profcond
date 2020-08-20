@@ -129,7 +129,6 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
             '[state-type]' => array (
               '[state-selector]' => array(
                 '[state-property]' => '[state-property-value]',
-                [option] => [option_value],
               ),
             ),
           ),
