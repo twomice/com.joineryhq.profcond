@@ -46,6 +46,16 @@
         if ($('#' + datepickerid).is(':hidden')) {
           hiddenFields.push(el.name);
         }
+      // If this is a radio, we only care if all radios with this name are hidden;
+      // if any radio in this named radio group is still visible, we don't count
+      // this named field as hidden. (Why? Because the only purpose of noting which
+      // fields are hidden is to prevent them from being required. But if any one
+      // radio option in a required radio field is visible, then the field should
+      // be required.)
+      } else if (el.type == 'radio') {
+        if (!$('input[type="radio"][name="' + el.name + '"]').not(':hidden').length) {
+          hiddenFields.push(el.name);
+        }
       } else if (el.name.length) {
         hiddenFields.push(el.name);
       }
