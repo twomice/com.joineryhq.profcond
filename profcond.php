@@ -23,11 +23,18 @@ function profcond_civicrm_buildForm($formName, &$form) {
   }
   if ($useConditionals) {
     $pageId = $form->get('id');
-    $config = _profcond_get_search_config($useConditionals, $pageId);
+    $priceSetId = $form->getVar('_priceSetId');
+    $config = _profcond_get_search_config($useConditionals, $pageId, $priceSetId);
 
     // Only take action if we're configured to act on this page (or all pages).
     $pageConfig = $config[$useConditionals]['all'] ?: [];
-    $pageConfig = array_merge($pageConfig, CRM_Utils_Array::value($pageId, $config[$useConditionals], []));
+    $pageConfig = array_merge_recursive($pageConfig, CRM_Utils_Array::value($pageId, $config[$useConditionals], []));
+
+    if ($priceSetId) {
+      $pageConfig = array_merge_recursive($pageConfig, ($config['priceset']['all'] ?: []));
+      $pageConfig = array_merge_recursive($pageConfig, ($config['priceset'][$priceSetId] ?: []));
+    }
+
     if ($pageConfig) {
       // Add JS Class file for select2 support class. Ensure its weight is lower than profcond.js
       // so that the class is actually loaded before it's invoked in profcond.js.
@@ -253,7 +260,12 @@ function _profcond_get_search_config($pageType, $entityId) {
   $config = CRM_Core_BAO_Setting::getItem(NULL, 'com.joineryhq.profcond');
   // Invoke hook_civicrm_profcond_alterConfig
   $null = NULL;
-  CRM_Utils_Hook::singleton()->invoke(['config', 'pageType', 'entityId'], $config, $pageType, $entityId,
+  CRM_Utils_Hook::singleton()->invoke(['config', 'entityType', 'entityId'], $config, $pageType, $entityId,
+    $null, $null, $null,
+    'civicrm_profcond_alterConfig'
+  );
+  $pageTypePriceSet = 'priceset';
+  CRM_Utils_Hook::singleton()->invoke(['config', 'entityType', 'entityId'], $config, $pageTypePriceSet, $priceSetId,
     $null, $null, $null,
     'civicrm_profcond_alterConfig'
   );

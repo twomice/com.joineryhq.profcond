@@ -107,8 +107,8 @@ of field states to manifest when the condition test as either true or false.
 
 ```php
 $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
-  '[page-type]' => array(
-    [page-id] => array (
+  '[entity-type]' => array(
+    [entity-id] => array (
       '[rule-name]' => array(
         'limit' => array(
           'formId' => array(
@@ -140,19 +140,19 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
 
 ```
 
-### [page-type]
-Must be 'event' or 'contribution' to indicate that this section applies to event registration pages
-or contribution pages.
+### [entity-type]
+Must be 'event', 'contribution', or 'priceset' to indicate that this section applies 
+to event registration pages, contribution pages, or one of those using a specific price set.
 In future, other values may be supported.
 
-### [page-id]
+### [entity-id]
 Must be one these:
-* An event ID or contribution page ID. Rules in this section will only be applied to this page-type and ID.
-* The string `all`, to apply the rule to all events (or contribution pages).  If you specify both `all`
-and a page ID, the page ID settings will override the `all` settings.
+* An event ID, contribution page ID, or price set ID. Rules in this section will only be applied to this entity-type and ID.
+* The string `all`, to apply the rule to all entities of the specified entity-type.  If you specify both `all`
+and a specific ID, the ID settings will override the `all` settings.
 
 ### [rule-name]
-* Must be a unique string within this page-type/page-id section.
+* Must be a unique string within this entity-type/entity-id section.
 * Must also be suitable for use as a CSS class.
 * The special name 'onload' defines a rule which fires upon page load;  
   its key is 'onload' and its value is an array in the form of [condition-success];  
@@ -160,7 +160,7 @@ and a page ID, the page ID settings will override the `all` settings.
 
 ### "limit"
 Optional array defining a regular expression that will limit the forms on which
-this rule is applied. Because [page-type] and [page-id] already facilitate limiting
+this rule is applied. Because [entity-type] and [entity-id] already facilitate limiting
 rules to specific events and contribution pages, this "limit" array is only expected
 to be useful in the case of multi-participant event registrations, in which the
 primary participant form has the formId "Register", and additional participant
@@ -269,7 +269,7 @@ For these values of [state-property], the possible [state-property] values are:
 ## Variables
 ProfileConditionals defines these JavaScript variables in CRM.vars.profcond:
 
-* pageConfig: the full array of rules as configured for the current [page-type] and [page-id].
+* pageConfig: the full array of rules as configured for the current [entity-type] and [entity-id].
 * formId: the `id` attribute of the CiviCRM form being displayed.
 * submittedParticipantValues: defined on "additional participantn" forms in a multi-participant event registration;
   an array of the values submitted values (omitting credit card details) from the
@@ -334,7 +334,7 @@ function myextension_civicrm_profcond_alterConfig(&$config, $pageType, $entityId
 
 ## FAQs
 1. **What about wildcards? I want to apply the same rules to several different events.**  
-    Use the string `all` as the event ID or contribution page ID; see notes on `[page-id]`, above.
+    Use the string `all` as the entity-id; see notes on `[entity-id]`, above.
 
     Alternately, you could do something like this for a more specific set of events (or the equivalent, for contribution pages):
     ```
