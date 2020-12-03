@@ -135,6 +135,12 @@
       el.prependTo(state.prependTo);
     }
 
+    if (state.triggerEvents && Array.isArray(state.triggerEvents)) {
+      for(var i in state.triggerEvents) {
+        el.trigger(state.triggerEvents[i]);
+      }
+    }
+
     if (state.is_price_change) {
       switch (el.attr('type')) {
         case 'checkbox':
