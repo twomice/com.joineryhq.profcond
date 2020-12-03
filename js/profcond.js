@@ -187,22 +187,22 @@
           }
         }
         else if (condition.op == 'value_lt') {
-          if (val < condition.value) {
+          if (val && val < condition.value) {
             conditionPass = true;
           }
         }
         else if (condition.op == 'value_lte') {
-          if (val <= condition.value) {
+          if (val && val <= condition.value) {
             conditionPass = true;
           }
         }
         else if (condition.op == 'value_gt') {
-          if (val > condition.value) {
+          if (val && val > condition.value) {
             conditionPass = true;
           }
         }
         else if (condition.op == 'value_gte') {
-          if (val >= condition.value) {
+          if (val && val >= condition.value) {
             conditionPass = true;
           }
         }
