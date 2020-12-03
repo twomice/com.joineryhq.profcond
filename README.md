@@ -210,6 +210,10 @@ The type of comparison to be performed for this field. One of:
 
 * value_is: The subject of [subject-identifier] must have the given [test-value] value for the condition to pass.
 * value_is_one_of: The subject of [subject-identifier] must have any of the given [test-value] values for the condition to pass.
+* value_gt: The subject of [subject-identifier] must be greater than the given [test-value] values for the condition to pass (uses JavaScript `>` operator, expects to compare numeric values).
+* value_gte: The subject of [subject-identifier] must be greater than or equal to the given [test-value] values for the condition to pass (uses JavaScript `>=` operator, expects to compare numeric values).
+* value_lt: The subject of [subject-identifier] must be greater than the given [test-value] values for the condition to pass (uses JavaScript `<` operator, expects to compare numeric values).
+* value_lte: The subject of [subject-identifier] must be greater than or equal to the given [test-value] values for the condition to pass (uses JavaScript `<=` operator, expects to compare numeric values).
 * is_set: The subject of [subject-identifier] must have a value for the condition to pass.
 * is_checked: The subject of [subject-identifier] must be checked to pass (appropriate for checkbox and radio elements);  
   only appropriate where [subject-identifier-type] is 'id' or 'selector'.

@@ -179,11 +179,33 @@
           if (val == condition.value) {
             conditionPass = true;
           }
-        } else if (condition.op == 'value_is_one_of') {
+        }
+        else if (condition.op == 'value_lt') {
+          if (val < condition.value) {
+            conditionPass = true;
+          }
+        }
+        else if (condition.op == 'value_lte') {
+          if (val <= condition.value) {
+            conditionPass = true;
+          }
+        }
+        else if (condition.op == 'value_gt') {
+          if (val > condition.value) {
+            conditionPass = true;
+          }
+        }
+        else if (condition.op == 'value_gte') {
+          if (val >= condition.value) {
+            conditionPass = true;
+          }
+        }
+        else if (condition.op == 'value_is_one_of') {
           if (condition.value.indexOf(val) > -1) {
             conditionPass = true;
           }
-        } else if (condition.op == 'is_set') {
+        }
+        else if (condition.op == 'is_set') {
           if (val) {
             conditionPass = true;
           }
@@ -227,7 +249,7 @@
         if (typeof rule.limit.formId.pattern == 'string') {
           regex = new RegExp(rule.limit.formId.pattern, rule.limit.formId.flags);
           if (! regex.test(CRM.vars.profcond.formId)) {
-            console.log('Rule limit does not match formId', CRM.vars.profcond.formId, 'skipping rule', ruleName);
+            console.log('ProfileConditionals: Rule limit does not match formId', CRM.vars.profcond.formId, 'skipping rule', ruleName);
             continue;
           }
         }
@@ -258,7 +280,7 @@
               el = $('input[type="radio"][name="' + el.attr('name') + '"]');
             }
             if (!el.hasClass(ruleClass)) {
-              el.change({'ruleClass': ruleClass, 'conditionType': conditionType, 'conditions': conditions, 'states': rule.states}, profcondHandleChange);
+              el.on('change input', {'ruleClass': ruleClass, 'conditionType': conditionType, 'conditions': conditions, 'states': rule.states}, profcondHandleChange);
               el.addClass(ruleClass);
             }
           }
@@ -286,7 +308,7 @@
           var property = condition.variable[i];
           conditionVarStringName += '.' + property;
           if (!conditionVar.hasOwnProperty(property)) {
-            console.log('Config references unknown javascript variable', conditionVarStringName);
+            console.log('ProfileConditionals: Config references unknown javascript variable', conditionVarStringName);
             return;
           }
           conditionVar = conditionVar[property];
