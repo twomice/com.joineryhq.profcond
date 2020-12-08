@@ -218,8 +218,8 @@
         }
       }
 
-      if (condition.invert) {
-        // If so instructed, invert the pass/fail result of this condition.
+      if (condition.negate) {
+        // If so instructed, negate the pass/fail result of this condition.
         conditionPass = conditionPass ? false : true;
       }
 

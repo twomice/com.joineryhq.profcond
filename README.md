@@ -121,7 +121,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
               '[subject-identifier-type]' => '[subject-identifier]',
               'op' => '[operator]',
               'value' => '[test-value]',
-              'invert' => [invert-value],
+              'negate' => [negate-value],
             ),
           )
         ),
@@ -222,15 +222,15 @@ The type of comparison to be performed for this field. One of:
 ### [test-value]
 The value to be compared in this condition.
 
-### [invert-value]
-Boolean TRUE or FALSE. If TRUE, the condition evaluation (a boolean) will be inverted. Default is FALSE (no inversion).
+### [negate-value]
+Boolean TRUE or FALSE. If TRUE, the condition evaluation (a boolean) will be negated. Default is FALSE (no negation).
 For example, the following condition will pass if the value of `#custom_261` is NOT '1':
 ```
   array(
     'id' => 'custom_261',
     'op' => 'value_is',
     'value' => '1',
-    'invert' => TRUE,
+    'negate' => TRUE,
   ),
 ```
 
