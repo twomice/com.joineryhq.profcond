@@ -218,6 +218,11 @@
         }
       }
 
+      if (condition.invert) {
+        // If so instructed, invert the pass/fail result of this condition.
+        conditionPass = conditionPass ? false : true;
+      }
+
       if (conditionPass) {
         if (conditionType == 'any_of') {
           return true;
