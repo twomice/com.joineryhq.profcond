@@ -31,8 +31,8 @@ function profcond_civicrm_buildForm($formName, &$form) {
     $pageConfig = array_merge_recursive($pageConfig, CRM_Utils_Array::value($pageId, $config[$useConditionals], []));
 
     if ($priceSetId) {
-      $pageConfig = array_merge_recursive($pageConfig, ($config['priceset']['all'] ?: []));
-      $pageConfig = array_merge_recursive($pageConfig, ($config['priceset'][$priceSetId] ?: []));
+      $pageConfig = array_merge_recursive($pageConfig, ($config['priceset']['all'] ?? []));
+      $pageConfig = array_merge_recursive($pageConfig, ($config['priceset'][$priceSetId] ?? []));
     }
 
     if ($pageConfig) {
