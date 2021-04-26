@@ -4,6 +4,9 @@ use CRM_Profcond_ExtensionUtil as E;
 /*
  * Settings metadata file
  */
+
+use CRM_Profcond_ExtensionUtil as E;
+
 return [
   'com.joineryhq.profcond' => [
     'group_name' => 'com.joineryhq.profcond',
