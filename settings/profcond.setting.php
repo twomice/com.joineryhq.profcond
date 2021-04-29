@@ -1,6 +1,5 @@
 <?php
 
-use CRM_Profcond_ExtensionUtil as E;
 /*
  * Settings metadata file
  */
