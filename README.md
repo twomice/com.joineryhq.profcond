@@ -265,6 +265,7 @@ The attribute of the given element to be changed. One of:
 * 'after'
 * 'is_price_change'
 * 'triggerEvents' (experimental)
+* 'copyValue' (experimental)
 
 See [state-property-value] for more information.
 
@@ -284,6 +285,7 @@ For these values of [state-property], the possible [state-property] values are:
 * 'after': The element will be relocated after the element indicated by this jQuery selector, with jQuery().insertAfter().
 * 'is_price_change': TRUE if this field is a price field and changing it should update the total amount. Defaults to FALSE.
 * 'triggerEvents' (experimental): An array of event types, to be triggered on the element with jQuery().trigger().
+* 'copyValue' (experimental): The element is assumed to be a field, the value of which will be set to the value of the element indicated by this jQuery selector, which is also assume to be a field.
 
 ## Variables
 ProfileConditionals defines these JavaScript variables in CRM.vars.profcond:

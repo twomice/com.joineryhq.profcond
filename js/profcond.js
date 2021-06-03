@@ -119,6 +119,10 @@
       el.val(state.value).change();
     }
 
+    if (state.copyValue) {
+      el.val($(state.copyValue).val()).change();
+    }
+
     if (state.before) {
       el.insertBefore(state.before);
     }
