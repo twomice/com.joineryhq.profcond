@@ -157,8 +157,16 @@
       switch (el.attr('type')) {
         case 'checkbox':
         case 'radio':
-          el.triggerHandler('click');
-          el.triggerHandler('change');
+          // Checkboxes and radios -- at least -- have a strange behavior for
+          // .triggerHandler() in that (somehow) if you call it for a selector
+          // that matches one element, it will call the correct click handler
+          // for the checkbox, but not if the selector matches multiple elements.
+          // So instead of calling it on `el`, we use .each() to call it
+          // separately on each matching element indivdually.
+          el.each(function(idx, elem) {
+            $(elem).triggerHandler('click');
+            $(elem).triggerHandler('change');
+          });
           break;
         case 'text':
           el.triggerHandler('keyup');
