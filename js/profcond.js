@@ -2,6 +2,8 @@
 
   // Define special handler for select2 elements.
   var ps2 = new profcondSelect2($);
+  // Store a list of required fields.
+  var requiredFields = [];
 
   /**
    * Override CiviCRM's calculateTotalFee(); we want to calculate for all
@@ -95,9 +97,15 @@
         switch (state.display) {
           case 'show':
             el.show();
+            el.find('input').each(function() {
+              if (requiredFields.includes(this.id)) {
+                this.classList.add('required');
+              }
+            });
             break;
           case 'hide':
             el.hide();
+            el.find('.required').removeClass('required');
             break;
         }
       }
@@ -356,6 +364,11 @@
   // First thing, add .profcond-price-element class to all price fields, so we can total them
   // with our custom calculateTotalFee() function.
   $("#priceset [price]").addClass('profcond-price-element');
+
+    // Store a list of required fields to better handle jQuery Validate.
+    $('.required').each(function() {
+      requiredFields.push(this.id);
+    });
 
   // Apply default state on page load.
   if (CRM.vars.profcond.pageConfig.onload) {
