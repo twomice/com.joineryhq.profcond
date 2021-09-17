@@ -46,6 +46,7 @@ $contionalBoilerplateToggleSiblingsPerParent = array(
     /**
      * Selector identifying the triggering field (checkbox or radio button), the state of
      * which will cause one or the other of two price options to be displayed.
+     * Because this is a CSS/jQuery selector, multiple fields can be defined.
      */
     'triggering_checkable_option' => 'div.price-set-row.super_early_bird-row1 input[type="checkbox"]',
     
@@ -68,58 +69,57 @@ $contionalBoilerplateToggleSiblingsPerParent = array(
      * additional classes to specify only this one row.
      */
     'wrapper_to_show_if_triggering_is_checked' => 'div.price-set-row.add_ons-row2',
-  ),
+ ),
 );
 /*********************************
- * NOTHING IN THE FOLLOWING ARRAY NEEDS ANY MODIFICATION.
+ * NOTHING IN THE REMAINER OF THIS EXAMPLE NEEDS ANY MODIFICATION.
  ***********************************/
-$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$contionalBoilerplateToggleSiblingsPerParent['entityType']][$contionalBoilerplateToggleSiblingsPerParent['entityId']] = array(
-  // We use $toggleSiblinsPerParentRuleCounter++ to ensure that every rule has a 
+$toggleSiblinsPerParentRuleCounter++;
+$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$contionalBoilerplateToggleSiblingsPerParent['entityType']][$contionalBoilerplateToggleSiblingsPerParent['entityId']]['toggleSiblinsPerParent_' . $toggleSiblinsPerParentRuleCounter] = array(
+  // We use $toggleSiblinsPerParentRuleCounter to ensure that every rule has a 
   // unique key name, which is important if we're re-using this boilerplate block
   // multiple times on the same entity page.
-  'toggleSiblinsPerParent_' . $toggleSiblinsPerParentRuleCounter++ => array(
-    'conditions' => array(
-      'all_of' => array(
-        array(
-          'selector' => $contionalBoilerplateToggleSiblingsPerParent['selectors']['triggering_checkable_option'],
-          'op' => 'is_checked',
+  'conditions' => array(
+    'all_of' => array(
+      array(
+        'selector' => $contionalBoilerplateToggleSiblingsPerParent['selectors']['triggering_checkable_option'],
+        'op' => 'is_checked',
+      ),
+    ),
+  ),
+  'states' => array(
+    'pass' => array(
+      'selectors' => array(
+        $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => array(
+          'display' => 'show',
+        ),
+        $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
+          'display' => 'hide',
+        ),
+        "{$contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked']} input" => array(
+          'is_price_change' => TRUE,
+          'properties' => array(
+            'checked' => FALSE,
+          ),
         ),
       ),
     ),
-    'states' => array(
-      'pass' => array(
-        'selectors' => array(
-          $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => array(
-            'display' => 'show',
-          ),
-          $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
-            'display' => 'hide',
-          ),
-          "{$contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked']} input" => array(
-            'is_price_change' => TRUE,
-            'properties' => array(
-              'checked' => FALSE,
-            ),
+    'fail' => array(
+      'selectors' => array(
+        $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
+          'display' => 'show',
+        ),
+        $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => array(
+          'display' => 'hide',
+        ),
+        "{$contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked']} input" => array(
+          'is_price_change' => TRUE,
+          'properties' => array(
+            'checked' => FALSE,
           ),
         ),
       ),
-      'fail' => array(
-        'selectors' => array(
-          $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
-            'display' => 'show',
-          ),
-          $contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => array(
-            'display' => 'hide',
-          ),
-          "{$contionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked']} input" => array(
-            'is_price_change' => TRUE,
-            'properties' => array(
-              'checked' => FALSE,
-            ),
-          ),
-        ),
-      ),
-    ),      
+    ),
   ),
 );
 /* *************************************
