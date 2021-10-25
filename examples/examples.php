@@ -48,8 +48,10 @@ $conditionalBoilerplateToggleSiblingsPerParent = array(
      * which will cause one or the other of two price options to be displayed.
      * Because this is a CSS/jQuery selector, multiple fields can be defined.
      */
-    'triggering_checkable_option' => 'div.price-set-row.super_early_bird-row1 input[type="checkbox"]',
-
+    'triggering_checkable_option' => '
+      div.price-set-row.super_early_bird-row1 input[type="checkbox"],
+      div.price-set-row.super_early_bird-row2 input[type="checkbox"]
+    ',
     /**
      * Selector identifying a "price row" div element in the form, which element
      * should be HIDDEN if the triggering field is selected.
@@ -75,7 +77,13 @@ $conditionalBoilerplateToggleSiblingsPerParent = array(
  * NOTHING IN THE REMAINDER OF THIS EXAMPLE NEEDS ANY MODIFICATION.
  ********************************** */
 $toggleSiblinsPerParentRuleCounter++;
-$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditionalBoilerplateToggleSiblingsPerParent['entityType']][$conditionalBoilerplateToggleSiblingsPerParent['entityId']]['toggleSiblinsPerParent_' . $toggleSiblinsPerParentRuleCounter] = array(
+// Assume that 'wrapper_to_hide_if_triggering_is_checked' and 'wrapper_to_show_if_triggering_is_checked' may be
+// comma-separated css selectors matching multiple elements. For each of those, define a string css selector
+// matching the 'input' elements inside of those wrappers, by using str_replace on comma to append ' input' to
+// the wrapper selectors.
+$inputs_to_hide_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'])) . ' input';
+$inputs_to_show_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'])) . ' input';
+$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditionalBoilerplateToggleSiblingsPerParent['entityType']][$conditionalBoilerplateToggleSiblingsPerParent['entityId']]['LPToggleSiblinsPerParent_' . $toggleSiblinsPerParentRuleCounter] = array(
   // We use $toggleSiblinsPerParentRuleCounter to ensure that every rule has a
   // unique key name, which is important if we're re-using this boilerplate block
   // multiple times on the same entity page.
@@ -96,7 +104,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditiona
         $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
           'display' => 'hide',
         ),
-        "{$conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked']} input" => array(
+        $inputs_to_hide_if_triggering_is_checked => array(
           'is_price_change' => TRUE,
           'properties' => array(
             'checked' => FALSE,
@@ -112,7 +120,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditiona
         $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => array(
           'display' => 'hide',
         ),
-        "{$conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked']} input" => array(
+        $inputs_to_show_if_triggering_is_checked => array(
           'is_price_change' => TRUE,
           'properties' => array(
             'checked' => FALSE,
