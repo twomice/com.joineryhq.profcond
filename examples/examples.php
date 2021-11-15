@@ -76,14 +76,14 @@ $conditionalBoilerplateToggleSiblingsPerParent = array(
 /* ********************************
  * NOTHING IN THE REMAINDER OF THIS EXAMPLE NEEDS ANY MODIFICATION.
  ********************************** */
-$toggleSiblinsPerParentRuleCounter++;
+$toggleSiblingsPerParentRuleCounter++;
 // Assume that 'wrapper_to_hide_if_triggering_is_checked' and 'wrapper_to_show_if_triggering_is_checked' may be
 // comma-separated css selectors matching multiple elements. For each of those, define a string css selector
 // matching the 'input' elements inside of those wrappers, by using str_replace on comma to append ' input' to
 // the wrapper selectors.
 $inputs_to_hide_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'])) . ' input';
 $inputs_to_show_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'])) . ' input';
-$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditionalBoilerplateToggleSiblingsPerParent['entityType']][$conditionalBoilerplateToggleSiblingsPerParent['entityId']]['LPToggleSiblinsPerParent_' . $toggleSiblinsPerParentRuleCounter] = array(
+$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditionalBoilerplateToggleSiblingsPerParent['entityType']][$conditionalBoilerplateToggleSiblingsPerParent['entityId']]['LPToggleSiblingsPerParent_' . $toggleSiblingsPerParentRuleCounter] = array(
   // We use $toggleSiblinsPerParentRuleCounter to ensure that every rule has a
   // unique key name, which is important if we're re-using this boilerplate block
   // multiple times on the same entity page.
