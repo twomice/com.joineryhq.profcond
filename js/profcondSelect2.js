@@ -31,17 +31,21 @@ var profcondSelect2 = function profcondSelect2($) {
    * @returns void
    */
   this.setDisplayState = function setDisplayState(el, display) {
-    var sid = $(el).closest('select.crm-select2').prop('profcondId');
-    var oid = $(el).prop('profcondId');
-
-    switch (display) {
-      case 'show':
-        this.optionState[sid][oid] = 1;
-        break;
-      case 'hide':
-        this.optionState[sid][oid] = 0;
-        break;
-    }
+    // el may represent multiple options (as any jquery el may represent multiple elements).
+    // Thus we need to loop through the array and treat each one separately.
+    var theThis = this;
+    el.each(function(idx, elOp){
+      var sid = $(elOp).closest('select.crm-select2').prop('profcondId');
+      var oid = $(elOp).prop('profcondId');
+      switch (display) {
+        case 'show':
+          theThis.optionState[sid][oid] = 1;
+          break;
+        case 'hide':
+          theThis.optionState[sid][oid] = 0;
+          break;
+      }
+    });
   };
 
   /**
