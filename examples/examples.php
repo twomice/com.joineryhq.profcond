@@ -84,7 +84,7 @@ $toggleSiblingsPerParentRuleCounter++;
 $inputs_to_hide_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'])) . ' input';
 $inputs_to_show_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'])) . ' input';
 $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditionalBoilerplateToggleSiblingsPerParent['entityType']][$conditionalBoilerplateToggleSiblingsPerParent['entityId']]['LPToggleSiblingsPerParent_' . $toggleSiblingsPerParentRuleCounter] = array(
-  // We use $toggleSiblinsPerParentRuleCounter to ensure that every rule has a
+  // We use $toggleSiblingsPerParentRuleCounter to ensure that every rule has a
   // unique key name, which is important if we're re-using this boilerplate block
   // multiple times on the same entity page.
   'conditions' => array(
