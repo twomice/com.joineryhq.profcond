@@ -4,6 +4,8 @@
   var ps2 = new profcondSelect2($);
   // Store a list of required fields.
   var requiredFields = [];
+  // Note whether Stripe is in use; this effects handling of hidden required fields.
+  var isStripePaymentProcessor = (CRM.vars.stripe !== undefined);
 
   /**
    * Override CiviCRM's calculateTotalFee(); we want to calculate for all
@@ -30,7 +32,13 @@
    */
   var profcondStoreHidden = function profcondStoreHidden(e) {
     var hiddenFields = [];
-    $('input:hidden, select:hidden, textarea:hidden').each(function (idx, el) {
+    // Find all hidden input, select, and textarea fields in the form.
+    /*jshint multistr: true */
+    $('\
+      form#' + CRM.vars.profcond.formId +' input:hidden, \n\
+      form#' + CRM.vars.profcond.formId +' select:hidden, \n\
+      form#' + CRM.vars.profcond.formId +' textarea:hidden \n\
+    ').each(function (idx, el) {
       // If this is a select2 base control, it will always be hidden. We only care
       // if the select2 itself is hidden.
       if ((el.type == 'select-one' || el.type == 'select-multiple') && $(el).hasClass('crm-select2')) {
@@ -94,9 +102,28 @@
         ps2.setDisplayState(el, state.display);
       }
       else {
+        var jQueryShowHideOptions = {
+          'duration': 0
+        };
+        if (isStripePaymentProcessor) {
+          // If Stripe is in use, we must track hidden required fields now,
+          // because Stripe will prevent us from using the Submit event to do so.
+          // (If Stripe is not in use, profcondStoreHidden is only called once
+          // at form Submit, which is more efficient; for this event handler asignment,
+          // search this code for isStripePaymentProcessor.)
+          jQueryShowHideOptions.always = function() {
+            // Experience shows that If we don't wait some, profcondStoreHidden will
+            // not correctly detect is:hidden status of select2 fields; this in spite
+            // of the expectations of 'always', which is that the function will
+            // fire after the show/hide promise returns.
+            // Therefore we wait 10 ms.
+            setTimeout(profcondStoreHidden, 10);
+          };
+        }
+
         switch (state.display) {
           case 'show':
-            el.show();
+            el.show(jQueryShowHideOptions);
             el.find('input').each(function() {
               if (requiredFields.includes(this.id)) {
                 this.classList.add('required');
@@ -104,7 +131,7 @@
             });
             break;
           case 'hide':
-            el.hide();
+            el.hide(jQueryShowHideOptions);
             el.find('.required').removeClass('required');
             break;
         }
@@ -385,7 +412,14 @@
 
   profcondInitializeRules();
 
-  // Add submit handler to form, to pass compiled list of hidden fields with submission.
-  $('form#' + CRM.vars.profcond.formId).submit(profcondStoreHidden);
+  // If Stripe is not in use, we can track hidden required fields once upon form
+  // submit, which is moste efficient. (If Stripe is in use, we cannot, because Stripe will prevent us from
+  // using the Submit event to do so; in that case, profcondStoreHidden is called
+  // each time any element is shown or hidden; for that usage, search this code
+  // for isStripePaymentProcessor.)
+  if (!isStripePaymentProcessor) {
+    // Add submit handler to form, to pass compiled list of hidden fields with submission.
+    $('form#' + CRM.vars.profcond.formId).submit(profcondStoreHidden);
+  }
 
 })(CRM.$, CRM.ts('com.joineryhq.profcond'));
