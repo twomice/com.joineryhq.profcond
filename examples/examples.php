@@ -49,8 +49,11 @@ $conditionalBoilerplateToggleSiblingsPerParent = array(
      * Because this is a CSS/jQuery selector, multiple fields can be defined.
      */
     'triggering_checkable_option' => '
+      // This should be a css selector for one or more inputs, each of
+      // which is either a radio or checkbox.
       div.price-set-row.super_early_bird-row1 input[type="checkbox"],
-      div.price-set-row.super_early_bird-row2 input[type="checkbox"]
+      div.price-set-row.super_early_bird-row2 input[type="checkbox"],
+      div.price-set-row.something_else-row2 input[type="radio"]
     ',
     /**
      * Selector identifying a "price row" div element in the form, which element
