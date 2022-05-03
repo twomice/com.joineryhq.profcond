@@ -7,6 +7,9 @@
   // Note whether Stripe is in use; this effects handling of hidden required fields.
   var isStripePaymentProcessor = (CRM.vars.stripe !== undefined);
 
+  // Hard-code this to 'true' to enable logging of rules application in the javascript console.
+  var profcondDebug = false;
+
   /**
    * Override CiviCRM's calculateTotalFee(); we want to calculate for all
    * price fields, which we may have moved outside of #priceset.
@@ -23,6 +26,14 @@
     return totalFee;
   };
 
+  /**
+   * If console logging is enabled, print a message to the console.
+   */
+  var profcondLogDebug = function profcondLogDebug() {
+    if (profcondDebug) {
+      console.log.apply(console, arguments);
+    }
+  }
 
   /**
    * Compile a list of all ':hidden' fields and store that list in the 'profcond_hidden_fields'
@@ -84,12 +95,14 @@
     if (typeof states.selectors != 'undefined') {
       for (var selector in states.selectors) {
         state = states.selectors[selector];
+        profcondLogDebug('applying state to selector', selector, state);
         profcondApplyState(selector, 'selector', state);
       }
     }
     if (typeof states.profiles != 'undefined') {
       for (var profile in states.profiles) {
         state = states.profiles[profile];
+        profcondLogDebug('applying state to profile', profile, state);
         profcondApplyState(profile, 'profile', state);
       }
     }
@@ -307,11 +320,12 @@
         if (typeof rule.limit.formId.pattern == 'string') {
           regex = new RegExp(rule.limit.formId.pattern, rule.limit.formId.flags);
           if (! regex.test(CRM.vars.profcond.formId)) {
-            console.log('ProfileConditionals: Rule limit does not match formId', CRM.vars.profcond.formId, 'skipping rule', ruleName);
+            profcondLogDebug('ProfileConditionals: Rule limit does not match formId', CRM.vars.profcond.formId, 'skipping rule', ruleName);
             continue;
           }
         }
       }
+      profcondLogDebug('onload, applying rule: ', ruleName);
       var ruleClass = 'profcond-has-rule_' + ruleName;
       for (var conditionType in rule.conditions) {
         var conditions = rule.conditions[conditionType];
@@ -366,7 +380,7 @@
           var property = condition.variable[i];
           conditionVarStringName += '.' + property;
           if (!conditionVar.hasOwnProperty(property)) {
-            console.log('ProfileConditionals: Config references unknown javascript variable', conditionVarStringName);
+            profcondLogDebug('ProfileConditionals: Config references unknown javascript variable', conditionVarStringName);
             return;
           }
           conditionVar = conditionVar[property];
@@ -384,11 +398,13 @@
   };
 
   var profcondHandleChange = function profcondHandleChange(e) {
+    profcondLogDebug('Event has triggered rule: ', e.data.ruleClass);
     profcondApplyRule(e.data.conditionType, e.data.conditions, e.data.states);
   };
 
   var profcondApplyRule = function profcondApplyRule(conditionType, conditions, states) {
     var pass = profcondTestCondition(conditionType, conditions);
+    profcondLogDebug('rule passed', pass);
     if (pass) {
       profcondApplyStates(states.pass);
     } else {
@@ -407,6 +423,7 @@
 
   // Apply default state on page load.
   if (CRM.vars.profcond.pageConfig.onload) {
+    profcondLogDebug('Onload rule: ');
     profcondApplyStates(CRM.vars.profcond.pageConfig.onload);
   }
 
