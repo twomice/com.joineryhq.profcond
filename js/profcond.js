@@ -1,4 +1,4 @@
-(function ($, ts) {
+CRM.$(function ($, ts) {
 
   // Define special handler for select2 elements.
   var ps2 = new profcondSelect2($);
