@@ -439,4 +439,4 @@ CRM.$(function ($, ts) {
     $('form#' + CRM.vars.profcond.formId).submit(profcondStoreHidden);
   }
 
-})(CRM.$, CRM.ts('com.joineryhq.profcond'));
+});
