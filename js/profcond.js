@@ -110,6 +110,9 @@ CRM.$(function ($, ts) {
 
   var profcondApplyState = function profcondApplyState(id, type, state) {
     var el = profcondGetEl(id, type);
+    if (!el.length) {
+      procondLogDebug('WARNING: applying state to non-existent element', id, type);
+    }
     if (state.display) {
       if (ps2.elementIsSelect2Option(el)) {
         ps2.setDisplayState(el, state.display);
