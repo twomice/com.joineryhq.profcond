@@ -243,14 +243,14 @@ One of:
 ### [state-type]
 One of:
 
-* 'profile': This state will be applied to a CiviCRM profile on the page.
-* 'selector': This state will be applied to an element on the page described by a jQuery selector.
+* 'profiles': This state will be applied to a CiviCRM profile on the page.
+* 'selectors': This state will be applied to an element on the page described by a jQuery selector.
 
 ### [state-selector]
 Depending on the value of [state-type], one of the following:
 
-* If [state-type] is 'profile', the CiviCRM system ID of the profile.
-* If [state-type] is 'selector', a jQuery selector describing one or more elements on the page.
+* If [state-type] is 'profiles', the CiviCRM system ID of the profile.
+* If [state-type] is 'selectors', a jQuery selector describing one or more elements on the page.
 
 ### [state-property]
 The attribute of the given element to be changed. One of:
