@@ -140,7 +140,7 @@ CRM.$(function ($, ts) {
         switch (state.display) {
           case 'show':
             el.show(jQueryShowHideOptions);
-            el.find('input').each(function() {
+            el.find('input,textarea').each(function() {
               if (requiredFields.includes(this.id)) {
                 this.classList.add('required');
               }

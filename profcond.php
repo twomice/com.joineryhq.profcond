@@ -27,7 +27,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
     $config = _profcond_get_search_config($useConditionals, $pageId, $priceSetId);
 
     // Only take action if we're configured to act on this page (or all pages).
-    $pageConfig = $config[$useConditionals]['all'] ?: [];
+    $pageConfig = $config[$useConditionals]['all'] ?? [];
     $pageConfig = array_merge_recursive($pageConfig, CRM_Utils_Array::value($pageId, $config[$useConditionals], []));
 
     if ($priceSetId) {
@@ -65,10 +65,21 @@ function profcond_civicrm_buildForm($formName, &$form) {
         $hiddenFieldNames = json_decode($form->_submitValues['profcond_hidden_fields']);
         $temporarilyUnrequiredFields = array();
         foreach ($hiddenFieldNames as $hiddenFieldName) {
-          $index = array_search($hiddenFieldName, $form->_required);
-          if ($index) {
+          // If hiddenField is a checkbox, it will have a name like field_id[option_id], e.g. "price_13[21]"
+          // so we will not have found it yet in $form->_required. Check again.
+          if (preg_match('/^[^[]+\[[0-9]+\]$/', $hiddenFieldName)) {
+            $baseHiddenFieldName = array_shift(explode('[', $hiddenFieldName));
+          }
+          else {
+            $baseHiddenFieldName = $hiddenFieldName;
+          }
+
+          $index = array_search($baseHiddenFieldName, $form->_required);
+          if ($index !== FALSE) {
+            dsm($hiddenFieldName, "unsrequiring field");
             unset($form->_required[$index]);
-            $temporarilyUnrequiredFields[] = $hiddenFieldName;
+            $temporarilyUnrequiredFields[] = $baseHiddenFieldName;
+            continue;
           }
         }
         // Store the list so we can add them back later.
