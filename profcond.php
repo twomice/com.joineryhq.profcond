@@ -76,7 +76,6 @@ function profcond_civicrm_buildForm($formName, &$form) {
 
           $index = array_search($baseHiddenFieldName, $form->_required);
           if ($index !== FALSE) {
-            dsm($hiddenFieldName, "unsrequiring field");
             unset($form->_required[$index]);
             $temporarilyUnrequiredFields[] = $baseHiddenFieldName;
             continue;
