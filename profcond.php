@@ -58,8 +58,14 @@ function profcond_civicrm_buildForm($formName, &$form) {
       CRM_Core_Resources::singleton()->addVars('profcond', $jsVars);
       // Add a hidden field for transmitting names of dynamically hidden fields.
       $form->add('hidden', 'profcond_hidden_fields', NULL, array('id' => 'profcond_hidden_fields'));
-      // Take specific action when form has been submitted.
-      if ($form->_flagSubmitted) {
+      // Take specific action when form has been submitted with an action that will
+      // incur form validation.
+      $actionName = $form->controller->_actionName[1];
+      $unvalidatedActionNames = [
+        'display',
+        'reload',
+      ];
+      if (!in_array($actionName, $unvalidatedActionNames)) {
         // Note the value of profcond_hidden_fields and temporarily strip them
         // from the "required" array. (We'll add them back later in hook_civicrm_validateForm().)
         $hiddenFieldNames = json_decode($form->_submitValues['profcond_hidden_fields']);
