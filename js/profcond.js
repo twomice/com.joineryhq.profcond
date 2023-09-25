@@ -7,9 +7,6 @@ CRM.$(function ($, ts) {
   // Note whether Stripe is in use; this effects handling of hidden required fields.
   var isStripePaymentProcessor = (CRM.vars.stripe !== undefined);
 
-  // Hard-code this to 'true' to enable logging of rules application in the javascript console.
-  var profcondDebug = false;
-
   /**
    * Override CiviCRM's calculateTotalFee(); we want to calculate for all
    * price fields, which we may have moved outside of #priceset.
@@ -30,7 +27,7 @@ CRM.$(function ($, ts) {
    * If console logging is enabled, print a message to the console.
    */
   var profcondLogDebug = function profcondLogDebug() {
-    if (profcondDebug) {
+    if (CRM.vars.profcond.isDebug) {
       console.log.apply(console, arguments);
     }
   };

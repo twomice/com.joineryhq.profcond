@@ -42,7 +42,11 @@ function profcond_civicrm_buildForm($formName, &$form) {
       // Add javascript file to handle the bulk of profcond rules processing.
       CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js', 11, 'page-footer');
       $jsVars = array(
+        // Whether civicrm debugging is on:
+        'isDebug' => (bool) CRM_Core_BAO_Setting::getItem(NULL, 'debug_enabled'),
+        // Full configuration for this page:
         'pageConfig' => $pageConfig,
+        // The ID of this form (relevant esp. in multi-participant event registrations)
         'formId' => $form->_attributes['id'],
       );
       if ($formName == 'CRM_Event_Form_Registration_AdditionalParticipant') {
