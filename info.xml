@@ -18,11 +18,17 @@
   <version>1.6.4</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>4.7</ver>
-    <ver>5.0</ver>
+    <ver>5.27</ver>
   </compatibility>
-  <comments></comments>
+  <comments/>
   <civix>
     <namespace>CRM/Profcond</namespace>
+    <format>23.02.1</format>
   </civix>
+  <mixins>
+    <mixin>setting-php@1.0.0</mixin>
+  </mixins>
+  <classloader>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
 </extension>
