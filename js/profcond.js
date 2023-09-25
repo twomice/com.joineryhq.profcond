@@ -33,7 +33,7 @@ CRM.$(function ($, ts) {
     if (profcondDebug) {
       console.log.apply(console, arguments);
     }
-  }
+  };
 
   /**
    * Compile a list of all ':hidden' fields and store that list in the 'profcond_hidden_fields'
@@ -49,7 +49,11 @@ CRM.$(function ($, ts) {
       form#' + CRM.vars.profcond.formId +' input:hidden, \n\
       form#' + CRM.vars.profcond.formId +' select:hidden, \n\
       form#' + CRM.vars.profcond.formId +' textarea:hidden \n\
-    ').each(function (idx, el) {
+    ')
+    // Omit html <input type="hidden"> elements, which can in no meaningful way
+    // be considered "required" for form validation.
+    .not('[type="hidden"]')
+    .each(function (idx, el) {
       // If this is a select2 base control, it will always be hidden. We only care
       // if the select2 itself is hidden.
       if ((el.type == 'select-one' || el.type == 'select-multiple') && $(el).hasClass('crm-select2')) {

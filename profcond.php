@@ -79,12 +79,9 @@ function profcond_civicrm_buildForm($formName, &$form) {
           else {
             $baseHiddenFieldName = $hiddenFieldName;
           }
-
-          $index = array_search($baseHiddenFieldName, $form->_required);
-          if ($index !== FALSE) {
-            unset($form->_required[$index]);
+          $wasRequired = _profcond_unrequire_field($baseHiddenFieldName, $form);
+          if ($wasRequired) {
             $temporarilyUnrequiredFields[] = $baseHiddenFieldName;
-            continue;
           }
         }
         // Store the list so we can add them back later.
@@ -286,4 +283,33 @@ function _profcond_get_search_config($pageType, $entityId) {
     'civicrm_profcond_alterConfig'
   );
   return $config;
+}
+
+/**
+ * Specify that a given field should not be considered required.
+ * (This effect is temporary, reversed elsewhere in this extension.)
+ *
+ * @param string $baseHiddenFieldName The form name of the element.
+ * @param obj $form The form object, e.g. of the type passed to hook_civicrm_buildForm.
+ *
+ * @return boolean Whether this field was actually being required before this change.
+ */
+function _profcond_unrequire_field($baseHiddenFieldName, &$form) {
+  $wasRequired = NULL;
+  $requiredIndex = array_search($baseHiddenFieldName, $form->_required);
+  if ($requiredIndex !== FALSE) {
+    unset($form->_required[$requiredIndex]);
+    $wasRequired = TRUE;
+  }
+
+  if ($rules = &$form->_rules[$baseHiddenFieldName]) {
+    foreach ($rules as $ruleIndex => $rule) {
+      if ($rule['type'] == 'required') {
+        unset($rules[$ruleIndex]);
+      }
+    }
+    $wasRequired = TRUE;
+  }
+
+  return $wasRequired;
 }
