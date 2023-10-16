@@ -193,6 +193,7 @@ or `all_of`, containing any number of conditions.
 One of:
 * id: if the item being evaluated is a DOM element on the page.
 * selector: if the item being evaluated is a DOM element on the page.
+* label: if the item being evaluated is the label of a DOM element on the page.
 * variable: if the item being evaluated is a JavaScript variable. (See "Variables" for
   more information about the JavaScript variables defined by Profile Conditionals.)
 
@@ -200,6 +201,7 @@ One of:
 One of these, depending on the value of [subject-identifier-type]:
 * If [subject-identifier-type] is 'id': The HTML "id" attribute of the field to be tested in this condition.
 * If [subject-identifier-type] is 'selector': A jQuery selector describing the field to be tested in this condition.
+* If [subject-identifier-type] is 'label': A string corresponding to the label of the element to be tested in this condition.
 * If [subject-identifier-type] is 'variable': One of these:
   * String: name of a global variable (property of the window object)
   * Array: ordered array of nested variable names within a global object variable (property of the window object)  

@@ -371,6 +371,9 @@ CRM.$(function ($, ts) {
       el = $('#' + condition.id);
     } else if (typeof condition.selector != 'undefined') {
       el = $(condition.selector);
+    } else if (typeof condition.label != 'undefined') {
+      condition.id = CRM.$("label:contains(" + condition.label + ")").attr('for');
+      el = $('#' + condition.id);
     }
     return el;
   };
