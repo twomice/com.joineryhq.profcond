@@ -18,6 +18,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
       break;
 
     case 'CRM_Contribute_Form_Contribution_Main':
+    case 'CRM_Contribute_Form_Contribution_Confirm':
       $useConditionals = 'contribution';
       break;
   }
@@ -70,9 +71,21 @@ function profcond_civicrm_buildForm($formName, &$form) {
         'reload',
       ];
       if (!in_array($actionName, $unvalidatedActionNames)) {
-        // Note the value of profcond_hidden_fields and temporarily strip them
+        // Hidden field names are submitted in the form field 'profcond_hidden_fields'.
+        // However, that field won't exist on Contribution 'Confirmation Page' submission.
+        // Therefore, we store it in the session when we have it, and on Confirmation
+        // Page submit, we'll get it from the session.
+        $session = CRM_Core_Session::singleton();
+        if ($formName == 'CRM_Contribute_Form_Contribution_Confirm' && $actionName == 'next') {
+          $hiddenFieldNamesJson = $session->get('profcond_hidden_fields_' . $form->controller->_key);
+        }
+        else {
+          $hiddenFieldNamesJson = $form->_submitValues['profcond_hidden_fields'];
+          $session->set('profcond_hidden_fields_' . $form->controller->_key, $hiddenFieldNamesJson);
+        }
+        // Now we know the value of profcond_hidden_fields. Temporarily strip them
         // from the "required" array. (We'll add them back later in hook_civicrm_validateForm().)
-        $hiddenFieldNames = json_decode($form->_submitValues['profcond_hidden_fields']);
+        $hiddenFieldNames = json_decode($hiddenFieldNamesJson);
         $temporarilyUnrequiredFields = array();
         foreach ($hiddenFieldNames as $hiddenFieldName) {
           // If hiddenField is a checkbox, it will have a name like field_id[option_id], e.g. "price_13[21]"
@@ -213,10 +226,10 @@ function _profcond_unrequire_field($baseHiddenFieldName, &$form) {
     $wasRequired = TRUE;
   }
 
-  if ($rules = &$form->_rules[$baseHiddenFieldName]) {
-    foreach ($rules as $ruleIndex => $rule) {
-      if ($rule['type'] == 'required') {
-        unset($rules[$ruleIndex]);
+  if (!empty($form->_rules[$baseHiddenFieldName])) {
+    foreach ($form->_rules[$baseHiddenFieldName] as $ruleIndex => $rule) {
+      if ($form->_rules[$baseHiddenFieldName]['type'] == 'required') {
+        unset($form->_rules[$baseHiddenFieldName][$ruleIndex]);
       }
     }
     $wasRequired = TRUE;
