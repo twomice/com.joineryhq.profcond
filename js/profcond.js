@@ -78,7 +78,21 @@ CRM.$(function ($, ts) {
         if (!$('input[type="radio"][name="' + el.name + '"]').not(':hidden').length) {
           hiddenFields.push(el.name);
         }
+      // If this is a checkbox, we only care if all checkboxes with this name are hidden;
+      // if any checkbox in this named checkbox group is still visible, we don't count
+      // this named field as hidden. (Why? Because the only purpose of noting which
+      // fields are hidden is to prevent them from being required. But if any one
+      // checkbox option in a required checkbox field is visible, then the field should
+      // be required.)
+      } else if (el.type == 'checkbox') {
+        // Checkboxes have names like 'basename[value]' in typical PHP submit-checkbox-as-array fashion.
+        // So we can use a regex to identify basename, and then look for like-named visible checkboxes.
+        var fieldBaseName = el.name.replace(/^([^\[]+)\[.+$/, '$1');
+        if (!$('input[type="checkbox"][name^="' + fieldBaseName + '["]').not(':hidden').length) {
+          hiddenFields.push(fieldBaseName);
+        }
       } else if (el.name.length) {
+        // Finally, treat the field as a 'normal' text or other input, and use the 'name' attribute.
         hiddenFields.push(el.name);
       }
     });

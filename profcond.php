@@ -85,17 +85,10 @@ function profcond_civicrm_buildForm($formName, &$form) {
         }
         // Now we know the value of profcond_hidden_fields. Temporarily strip them
         // from the "required" array. (We'll add them back later in hook_civicrm_validateForm().)
-        $hiddenFieldNames = json_decode($hiddenFieldNamesJson);
+        $hiddenFieldNames = array_unique(json_decode($hiddenFieldNamesJson));
         $temporarilyUnrequiredFields = array();
         foreach ($hiddenFieldNames as $hiddenFieldName) {
-          // If hiddenField is a checkbox, it will have a name like field_id[option_id], e.g. "price_13[21]"
-          // so we will not have found it yet in $form->_required. Check again.
-          if (preg_match('/^[^[]+\[[0-9]+\]$/', $hiddenFieldName)) {
-            $baseHiddenFieldName = array_shift(explode('[', $hiddenFieldName));
-          }
-          else {
-            $baseHiddenFieldName = $hiddenFieldName;
-          }
+          $baseHiddenFieldName = $hiddenFieldName;
           $wasRequired = _profcond_unrequire_field($baseHiddenFieldName, $form);
           if ($wasRequired) {
             $temporarilyUnrequiredFields[] = $baseHiddenFieldName;
@@ -228,7 +221,7 @@ function _profcond_unrequire_field($baseHiddenFieldName, &$form) {
 
   if (!empty($form->_rules[$baseHiddenFieldName])) {
     foreach ($form->_rules[$baseHiddenFieldName] as $ruleIndex => $rule) {
-      if ($form->_rules[$baseHiddenFieldName]['type'] == 'required') {
+      if ($rule['type'] == 'required') {
         unset($form->_rules[$baseHiddenFieldName][$ruleIndex]);
       }
     }
