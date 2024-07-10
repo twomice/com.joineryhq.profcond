@@ -32,6 +32,19 @@ CRM.$(function ($, ts) {
     }
   };
 
+  var profcondElementIsSelect2 = function profcondElementIsSelect2(el) {
+    // Most select2 controls (Price-field selects, core select fields (e.g. Address State), "Select"-type custom fields)
+    // are represented by a hidden <select> control.
+    // On the other hand, Entity Reference and Contact Reference custom fields are represented differently:
+    // by a hidden <input type="text"> field.
+    // Conveniently, both types have an `id` attribute AND a corresponding <div> element with an `id` like "s2id_[hidden-field-id]".
+    // E.g.
+    //  price field: hidden <select id="price_17">; corresponding select2 div: <div id="s2id_price_17">
+    //  contact reference: hidden <input type="text" id="custom_35">; corresponding select2 div: <div id="s2id_custom_35">
+
+    return $(el).closest('div.content').find('div#s2id_' + el.id).length;
+  }
+
   /**
    * Compile a list of all ':hidden' fields and store that list in the 'profcond_hidden_fields'
    * hidden field, so it will be passed to the form handler.
@@ -51,16 +64,7 @@ CRM.$(function ($, ts) {
     // be considered "required" for form validation.
     .not('[type="hidden"]')
     .each(function (idx, el) {
-      // If this is a select2 base control, it will always be hidden. We only care
-      // if the select2 itself is hidden.
-      if ((el.type == 'select-one' || el.type == 'select-multiple') && $(el).hasClass('crm-select2')) {
-        var select2id = 's2id_' + el.id;
-        if ($('#' + select2id).is(':hidden')) {
-          hiddenFields.push(el.name);
-        }
-      // If this is a datepicker base control, it will always be hidden. We only care
-      // if the datepicker itself is hidden.
-      } else if (
+    if (
         el.type == 'text' &&
         ($(el).hasClass('crm-hidden-date') || el.hasAttribute('data-crm-datepicker'))
       ) {
@@ -91,7 +95,18 @@ CRM.$(function ($, ts) {
         if (!$('input[type="checkbox"][name^="' + fieldBaseName + '["]').not(':hidden').length) {
           hiddenFields.push(fieldBaseName);
         }
-      } else if (el.name.length) {
+      }
+      // If this is a select2 base control, it will always be hidden. We only care
+      // if the select2 itself is hidden.
+      else if (profcondElementIsSelect2(el)) {
+        var select2id = 's2id_' + el.id;
+        if ($('#' + select2id).is(':hidden')) {
+          hiddenFields.push(el.name);
+        }
+      }
+      // If this is a datepicker base control, it will always be hidden. We only care
+      // if the datepicker itself is hidden.
+      else if (el.name.length) {
         // Finally, treat the field as a 'normal' text or other input, and use the 'name' attribute.
         hiddenFields.push(el.name);
       }
