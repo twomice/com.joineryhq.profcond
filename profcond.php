@@ -85,7 +85,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
         }
         // Now we know the value of profcond_hidden_fields. Temporarily strip them
         // from the "required" array. (We'll add them back later in hook_civicrm_validateForm().)
-        $hiddenFieldNames = array_unique(json_decode($hiddenFieldNamesJson));
+        $hiddenFieldNames = array_unique(json_decode($hiddenFieldNamesJson) ?? []);
         $temporarilyUnrequiredFields = array();
         foreach ($hiddenFieldNames as $hiddenFieldName) {
           $baseHiddenFieldName = $hiddenFieldName;
