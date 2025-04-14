@@ -275,8 +275,17 @@ CRM.$(function ($, ts) {
       else {
         val = profcondGetConditionValue(condition);
         if (condition.op == 'value_is') {
-          if (val == condition.value) {
-            conditionPass = true;
+          if (Array.isArray(val)) {
+            val.forEach((selectOption) => {
+              if (selectOption == condition.value) {
+                conditionPass = true;
+              }
+            });
+          }
+          else {
+            if (val == condition.value) {
+              conditionPass = true;
+            }
           }
         }
         else if (condition.op == 'value_lt') {
