@@ -33,4 +33,5 @@
   <classloader>
     <psr4 prefix="Civi\" path="Civi"/>
   </classloader>
+  <upgrader>CiviMix\Schema\Profcond\AutomaticUpgrader</upgrader>
 </extension>
