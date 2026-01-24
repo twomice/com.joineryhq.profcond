@@ -161,9 +161,18 @@ Must be one these:
 ### [rule-name]
 * Must be a unique string within this entity-type/entity-id section.
 * Must also be suitable for use as a CSS class.
-* The special name 'onload' defines a rule which fires upon page load;  
-  its key is 'onload' and its value is an array in the form of [condition-success];  
-  upon page load, the state described in this rule is applied unconditionally.
+* Special values:
+  - 'onload' defines a rule which fires upon page load; its key is 'onload' and
+    its value is an array in the form of [condition-success]; upon page load,
+    the state described in this rule is applied unconditionally.
+  - 'js_inject' defines a single JavaScript file which will be inected into the
+    page; its key is 'js_inject' and its value is a path (relative to the path
+    described below in "Custom Asset Files") to the relevant JavaScript file.
+    (Note that JavaScript files injected by this method will not have proper
+    access to localization strings for use in `ts()`.)
+  - 'css_inject' defines a single CSS style file which will be inected into the
+    page; its key is 'css_inject' and its value is a path (relative to the path
+    described below in "Custom Asset Files") to the relevant CSS style file.
 
 ### "limit"
 Optional array defining a regular expression that will limit the forms on which
@@ -358,6 +367,15 @@ console.log(CRM.vars.profcond);
       ),
     ),
   ```
+
+## Custom Asset Files
+The special rule names 'js_inject' and 'css_inject' allow for injection of custom
+JavaScript and CSS files. These files must be made available in the appropriate
+directory (js/ or css/ , respectively) under [civicrm.files]/profcond-assets/.
+This extension attempts to create that directory structure under [civicrm.files]
+upon installation; if they do not exist, you may create them manually.  All files
+under [civicrm.files]/profcond-assets will remain unmodified by this extension,
+with the exception of files named `README.md` and `profcond-example*`.
 
 ## More examples
 A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).

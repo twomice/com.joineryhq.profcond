@@ -40,8 +40,22 @@ function profcond_civicrm_buildForm($formName, &$form) {
       // Add JS Class file for select2 support class. Ensure its weight is lower than profcond.js
       // so that the class is actually loaded before it's invoked in profcond.js.
       CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcondSelect2.js', 1);
+
       // Add javascript file to handle the bulk of profcond rules processing.
       CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.profcond', 'js/profcond.js', 11, 'page-footer');
+
+      // If special rule-name 'css_inject' is defined, attempt to add the given javascript file:
+      if ($jsFileRelativePath = ($pageConfig['js_inject'] ?? FALSE)) {
+        $scriptUrl = Civi::paths()->getUrl("[civicrm.files]/profcond-assets/js/{$jsFileRelativePath}");
+        CRM_Core_Resources::singleton()->addScriptUrl($scriptUrl);
+      }
+
+      // If special rule-name 'js_inject' is defined, attempt to add the given javascript file:
+      if ($cssFileRelativePath = ($pageConfig['css_inject'] ?? FALSE)) {
+        $styleUrl = Civi::paths()->getUrl("[civicrm.files]/profcond-assets/css/{$cssFileRelativePath}");
+        CRM_Core_Resources::singleton()->addStyleUrl($styleUrl);
+      }
+
       $jsVars = array(
         // Whether civicrm debugging is on:
         'isDebug' => (bool) CRM_Core_BAO_Setting::getItem(NULL, 'debug_enabled'),

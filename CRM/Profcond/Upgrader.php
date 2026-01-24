@@ -11,13 +11,11 @@ final class CRM_Profcond_Upgrader extends \CRM_Extension_Upgrader_Base {
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
   /**
-   * Example: Run an external SQL script when the module is installed.
-   *
-   * Note that if a file is present sql\auto_install that will run regardless of this hook.
+   * Ensure Custom Asset Files directory is created.
    */
-  // public function install(): void {
-  //   $this->executeSqlFile('sql/my_install.sql');
-  // }
+  public function install(): void {
+    $this->ensureAdminAssetDirs();
+  }
 
   /**
    * Example: Work with entities usually not available during the install step.
@@ -134,5 +132,24 @@ final class CRM_Profcond_Upgrader extends \CRM_Extension_Upgrader_Base {
   //   }
   //   return TRUE;
   // }
+
+  /**
+   * Ensure Custom Asset File directories are created.
+   * @return bool
+   */
+  public function upgrade_4200() : bool {
+    $this->ensureAdminAssetDirs();
+    return TRUE;
+  }
+
+  /**
+   * Copy stub directories from [ext]/profcond/civicrm.files to
+   * [civicrm.files]/profcond-assets, as a location for Custom Asset Files.
+   */
+  private function ensureAdminAssetDirs() {
+    $targetPath = Civi::paths()->getPath('[civicrm.files]/profcond-assets');
+    $sourcePath  = E::path('profcond/civicrm.files');
+    CRM_Utils_File::copyDir($sourcePath, $targetPath);
+  }
 
 }
