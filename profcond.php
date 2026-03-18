@@ -202,7 +202,7 @@ function profcond_civicrm_enable() {
  */
 function _profcond_get_search_config($pageType, $entityId) {
   /* If com.joineryhq.profcond.settings.php exists, use it. */
-  $externalPath = $possiblePath = Civi::paths()->getPath("[civicrm.files]/com.joineryhq.profcond.settings.php");
+  $externalPath = Civi::paths()->getPath("[civicrm.files]/com.joineryhq.profcond.settings.php");
   if (is_readable($externalPath)) {
     include_once($externalPath);
     /* Force the settings manager to reload $civicrm_setting. See note on \Civi\Core\SettingsManager */
