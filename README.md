@@ -467,6 +467,6 @@ function myextension_civicrm_profcond_alterConfig(&$config, $pageType, $entityId
 
 ## Support
 
-Support for this extension is handled under Joinery's ["Active Support" policy](https://joineryhq.com/software-support-levels#active-support).
+Support for this package is handled under Joinery's ["Active Support" policy](https://joineryhq.com/software-support-levels#active-support).
 
-Public issue queue for this extension: [https://github.com/twomice/com.joineryhq.profcond/issues](https://github.com/twomice/com.joineryhq.profcond/issues)
+Public issue queue for this package: [https://github.com/twomice/com.joineryhq.profcond/issues](https://github.com/twomice/com.joineryhq.profcond/issues)
