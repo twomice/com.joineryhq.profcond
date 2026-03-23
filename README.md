@@ -23,7 +23,7 @@ in the sections that follow it.
 This extension has no browser-based configuration form within CiviCRM. Configuration
 is by PHP arrays in code within the civicrm.settings.php file or an external configuration file.
 
-Add your configuration to either civicrm.settings.php, or a file called com.joineryhq.profcond.settings.php in `[civicrm.files]`:
+Add your configuration to either civicrm.settings.php, or a file named com.joineryhq.profcond.settings.php in `[civicrm.files]`:
 ```php
 global $civicrm_setting;
 $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
