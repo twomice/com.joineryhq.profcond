@@ -211,6 +211,9 @@ One of:
 * selector: if the item being evaluated is a DOM element on the page.
 * variable: if the item being evaluated is a JavaScript variable. (See "Variables" for
   more information about the JavaScript variables defined by this extension.)
+* query_param: if the item being evaluated is a scalar $_GET value (URL query parameter).
+  NOTE: array-type query params (e.g. `?foo[]=1` will be silently ignored; only
+  scalar values are supported.)
 
 ### [subject-identifier]
 One of these, depending on the value of [subject-identifier-type]:
@@ -224,6 +227,7 @@ One of these, depending on the value of [subject-identifier-type]:
     (property of the window object)  
     Example:
     * `['CRM','vars','myextension','foobar',0]` to test the value of window.CRM.vars.myextension.foobar[0]
+* If [subject-identifier-type] is 'query_param': A query parameter name ($_GET array key).
 
 ### [operator]
 The type of comparison to be performed for this field. One of:
