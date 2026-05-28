@@ -64,6 +64,13 @@ function profcond_civicrm_buildForm($formName, &$form) {
         // The ID of this form (relevant esp. in multi-participant event registrations)
         'formId' => $form->_attributes['id'],
       );
+      // Add query params to jsVars[queryParams] -- but only if they're strings.
+      foreach ($_GET as $k => $v) {
+        if (is_string($v)) {
+          // It's a string? Use as-is.
+          $jsVars['queryParams'][$k] = $v;
+        }
+      }
       if ($formName == 'CRM_Event_Form_Registration_AdditionalParticipant') {
         $submittedParticipantValues = [];
         foreach ($form->getVar('_params') as $key => $params) {

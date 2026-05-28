@@ -414,7 +414,9 @@ CRM.$(function ($, ts) {
   };
 
   var profcondGetConditionValue = function profcondGetConditionValue(condition) {
+    console.log('condition', condition);
     if (typeof condition.variable != 'undefined') {
+      // If this condition's [subject-identifier] is 'variable', get that variable value.
       if (Array.isArray(condition.variable)) {
         var conditionVar = window;
         var conditionVarStringName = 'window';
@@ -433,7 +435,13 @@ CRM.$(function ($, ts) {
         return window[condition.variable];
       }
     }
+    else if (typeof condition.query_param != 'undefined') {
+      console.log(condition.query_param, CRM.vars.profcond.queryParams[condition.query_param]);
+      return CRM.vars.profcond.queryParams[condition.query_param];
+    }
     else {
+      // Otherwise, [subject-identifier] is 'id' or 'selector', and we can get
+      // the value with profcondGetConditionElement().
       el = profcondGetConditionElement(condition);
       return el.val();
     }
