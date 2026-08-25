@@ -58,7 +58,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
 
       $jsVars = array(
         // Whether civicrm debugging is on:
-        'isDebug' => (bool) CRM_Core_BAO_Setting::getItem(NULL, 'debug_enabled'),
+        'isDebug' => (bool) Civi::settings()->get('debug_enabled'),
         // Full configuration for this page:
         'pageConfig' => $pageConfig,
         // The ID of this form (relevant esp. in multi-participant event registrations)
@@ -216,7 +216,7 @@ function _profcond_get_search_config($pageType, $entityId) {
     \Civi::service('settings_manager')->useMandatory();
   }
   
-  $config = CRM_Core_BAO_Setting::getItem(NULL, 'com.joineryhq.profcond');
+  $config = Civi::settings()->get('com.joineryhq.profcond');
   // Invoke hook_civicrm_profcond_alterConfig
   $null = NULL;
   CRM_Utils_Hook::singleton()->invoke(['config', 'entityType', 'entityId'], $config, $pageType, $entityId,
