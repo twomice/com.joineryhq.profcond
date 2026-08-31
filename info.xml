@@ -19,6 +19,7 @@
   <develStage>stable</develStage>
   <compatibility>
     <ver>5.51</ver>
+    <ver>6.0</ver>
   </compatibility>
   <comments/>
   <civix>
