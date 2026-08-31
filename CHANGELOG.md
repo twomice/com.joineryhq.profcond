@@ -1,3 +1,9 @@
+## v1.7.5
+
+- Indicate support for civicrm 6.x
+- Replace deprecated CRM_Core_BAO_Setting::getItem with Civi::settings()
+
+
 ## v1.7.4
 
 - Support new [subject-identifier-type]: query_param.
