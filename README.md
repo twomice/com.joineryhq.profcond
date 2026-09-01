@@ -146,9 +146,13 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
 ```
 
 ### [entity-type]
-Must be 'event', 'contribution', or 'priceset' to indicate that this section
-applies to event registration pages, contribution pages, or one of those using
-a specific price set. In future, other values may be supported.
+Must be one of the following, indicating the relevant type of form:
+* 'event': configuration is relevant for an online event registration.
+* 'contribution': configuration is relevant for an contribution page.
+* 'priceset': configuration is relevant 'event' or 'contribution' which uses a
+  given price set.
+* 'profile': configuration is relevant for a freestanding profile in "Edit" or
+  "Create" mode.
 
 ### [entity-id]
 Must be one these:
@@ -335,7 +339,6 @@ For these values of [state-property], the possible [state-property] values are:
 * 'copyValue' (experimental): The element is assumed to be a field, the value
   of which will be set to the value of the element indicated by this jQuery
   selector, which is also assume to be a field.
-
 
 ## Variables
 ProfileConditionals defines the following JavaScript variables in CRM.vars.profcond.

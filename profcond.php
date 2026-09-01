@@ -15,15 +15,21 @@ function profcond_civicrm_buildForm($formName, &$form) {
     case 'CRM_Event_Form_Registration_Register':
     case 'CRM_Event_Form_Registration_AdditionalParticipant':
       $useConditionals = 'event';
+      $pageId = $form->get('id');
       break;
 
     case 'CRM_Contribute_Form_Contribution_Main':
     case 'CRM_Contribute_Form_Contribution_Confirm':
       $useConditionals = 'contribution';
+      $pageId = $form->get('id');
+      break;
+
+    case 'CRM_Profile_Form_Edit':
+      $useConditionals = 'profile';
+      $pageId = $form->get('gid');
       break;
   }
   if ($useConditionals) {
-    $pageId = $form->get('id');
     $priceSetId = $form->getVar('_priceSetId');
     $config = _profcond_get_search_config($useConditionals, $pageId, $priceSetId);
 
