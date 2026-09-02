@@ -1,3 +1,10 @@
+## v1.7.6
+
+- Support new [state-property]s: addClass, removeClass.
+- Support new special rule property 'is_preview'.
+- Support freestanding profiles in "Edit" or "Create" mode.
+
+
 ## v1.7.5
 
 - Indicate support for civicrm 6.x
