@@ -170,12 +170,12 @@ Must be one these:
   - 'onload' defines a rule which fires upon page load; its key is 'onload' and
     its value is an array in the form of [condition-success]; upon page load,
     the state described in this rule is applied unconditionally.
-  - 'js_inject' defines a single JavaScript file which will be inected into the
+  - 'js_inject' defines a single JavaScript file which will be injected into the
     page; its key is 'js_inject' and its value is a path (relative to the path
     described below in "Custom Asset Files") to the relevant JavaScript file.
     (Note that JavaScript files injected by this method will not have proper
     access to localization strings for use in `ts()`.)
-  - 'css_inject' defines a single CSS style file which will be inected into the
+  - 'css_inject' defines a single CSS style file which will be injected into the
     page; its key is 'css_inject' and its value is a path (relative to the path
     described below in "Custom Asset Files") to the relevant CSS style file.
 
@@ -317,6 +317,8 @@ The attribute of the given element to be changed. One of:
 * 'before'
 * 'after'
 * 'is_price_change'
+* 'addClass'
+* 'removeClass'
 * 'triggerEvents' (experimental)
 * 'copyValue' (experimental)
 
@@ -345,6 +347,9 @@ For these values of [state-property], the possible [state-property] values are:
   jQuery selector, with jQuery().insertAfter().
 * 'is_price_change': TRUE if this field is a price field and changing it should
   update the total amount. Defaults to FALSE.
+* 'addClass': A CSS class name, to be applied to the element with jQuery().addClass().
+* 'removeClass': A CSS class name, to be removed from the element with
+  jQuery().removeClass().
 * 'triggerEvents' (experimental): An array of event types, to be triggered on
   the element with jQuery().trigger().
 * 'copyValue' (experimental): The element is assumed to be a field, the value
@@ -401,7 +406,7 @@ A more involved example is contained in [CONFIG_EXAMPLE.md](CONFIG_EXAMPLE.md).
 ## Debug mode
 When CiviCRM's "Enable Debugging" setting is enabled (Administer > System
 Settings > Debugging and Error Handling), this extension will attempt to explain
-the ligical processing of all rules by printing informative messages in the
+the logical processing of all rules by printing informative messages in the
 browser's JavaScript console.
 
 ## Developer hooks

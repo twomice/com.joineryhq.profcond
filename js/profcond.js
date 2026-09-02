@@ -249,6 +249,15 @@ CRM.$(function ($, ts) {
           break;
       }
     }
+
+    if (state.addClass) {
+      el.addClass(state.addClass);
+    }
+
+    if (state.removeClass) {
+      el.removeClass(state.removeClass);
+    }
+
   };
 
   /**
