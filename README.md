@@ -119,6 +119,7 @@ $civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'] = array(
             'flags' => [limit-regex-flags],
           ),
         ),
+        'is_preview' => [BOOLEAN],
         'conditions' => array(
           '[condition-type]' => array(
             array(
@@ -187,6 +188,16 @@ in which the primary participant form has the formId "Register", and additional
 participant forms have the formId "Participant_1", "Participant_2", etc. The
 "limit" definition provides a way to specify that certain rules should only apply
 on the "Register" formId, or one or more of the additional participant forms.
+
+### "is_preview"
+If TRUE, this rule will only be applied if "profcond_preview=1" is specified in
+the URL query arguments. I.e., to observe this rule in action on the given form,
+append "profcond_preview=1" after "?" in the URL -- e.g. `https://example.org/civicrm/contribute/transact/?reset=1&id=1&profcond_preview=1`
+
+NOTE: For rules other than 'onload', an equivalent effect could be achieved by
+defining a [subject-identifier-type] of 'query_param', but the 'onload' rule
+has no conditions. Therefore, this special rule property is the only way to
+achieve this 'preview' effect in the 'onload' rule.
 
 ### [limit-regex-pattern]
 String. A pattern to be used in `new RegExp('[limit-regex-pattern]', 

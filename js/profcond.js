@@ -252,6 +252,17 @@ CRM.$(function ($, ts) {
   };
 
   /**
+   * Check whether a rule should be skipped based on is_preview property.
+   */
+  var profcondTestSkipPreviewRule = function profcondTestSkipPreviewRule(rule) {
+    return (
+      typeof rule.is_preview == 'boolean'
+      && rule.is_preview
+      && CRM.vars.profcond.queryParams['profcond_preview'] != '1'
+    );
+  }
+
+  /**
    *
    * @param String conditionType Either 'all_of' or 'any_of'
    * @param String conditions Object specifying fields and values to test.
@@ -357,6 +368,13 @@ CRM.$(function ($, ts) {
 
   var profcondInitializeRules = function profcondInitializeRules() {
     for (var ruleName in CRM.vars.profcond.pageConfig) {
+      profcondLogDebug('initializing rule: ', ruleName, ' ...');
+      if (ruleName == 'onload') {
+        // Onload rule has no conditions so won't actually be applied here. Skip
+        // it; it will be applied only onload (elsewehre).
+        profcondLogDebug('skipping initialize for "onload" rule, which is applied separately.');
+        continue;
+      }
       var rule = CRM.vars.profcond.pageConfig[ruleName];
       if (typeof rule.limit == 'object' && typeof rule.limit.formId == 'object') {
         if (typeof rule.limit.formId.pattern == 'string') {
@@ -366,6 +384,10 @@ CRM.$(function ($, ts) {
             continue;
           }
         }
+      }
+      if (profcondTestSkipPreviewRule(rule)) {
+        profcondLogDebug('ProfileConditionals: Rule is_preview = TRUE, but URL lacks profcond_preview=1 query parameter. Skipping rule: ', ruleName);
+        continue;
       }
       profcondLogDebug('onload, applying rule: ', ruleName);
       var ruleClass = 'profcond-has-rule_' + ruleName;
@@ -436,7 +458,7 @@ CRM.$(function ($, ts) {
       }
     }
     else if (typeof condition.query_param != 'undefined') {
-      console.log(condition.query_param, CRM.vars.profcond.queryParams[condition.query_param]);
+      profcondLogDebug('query param:', condition.query_param, CRM.vars.profcond.queryParams[condition.query_param]);
       return CRM.vars.profcond.queryParams[condition.query_param];
     }
     else {
@@ -473,8 +495,13 @@ CRM.$(function ($, ts) {
 
   // Apply default state on page load.
   if (CRM.vars.profcond.pageConfig.onload) {
-    profcondLogDebug('Onload rule: ');
-    profcondApplyStates(CRM.vars.profcond.pageConfig.onload);
+    if (profcondTestSkipPreviewRule(CRM.vars.profcond.pageConfig.onload)) {
+      profcondLogDebug('ProfileConditionals: Rule is_preview = TRUE, but URL lacks profcond_preview=1 query parameter. Skipping rule: onload');
+    }
+    else {
+      profcondLogDebug('Applying rule: onload');
+      profcondApplyStates(CRM.vars.profcond.pageConfig.onload);
+    }
   }
 
   profcondInitializeRules();
