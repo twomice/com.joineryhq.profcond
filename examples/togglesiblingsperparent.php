@@ -24,7 +24,7 @@
  *
  */
 // jQuery selectors (CSS selectors) for
-$conditionalBoilerplateToggleSiblingsPerParent = array(
+$conditionalBoilerplateToggleSiblingsPerParent = [
   /**
    *  Special value indicating the context of this rule:
    *    'event' if this is for an event registration form
@@ -42,7 +42,7 @@ $conditionalBoilerplateToggleSiblingsPerParent = array(
   /**
    * CSS selectors that are used by jQuery to identify the relevant form elements.
    */
-  'selectors' => array(
+  'selectors' => [
     /**
      * Selector identifying the triggering field (checkbox or radio button), the state of
      * which will cause one or the other of two price options to be displayed.
@@ -71,8 +71,8 @@ $conditionalBoilerplateToggleSiblingsPerParent = array(
      * additional classes to specify only this one row.
      */
     'wrapper_to_show_if_triggering_is_checked' => 'div.price-set-row.add_ons-row2',
-  ),
-);
+  ],
+];
 /* ********************************
  * NOTHING IN THE REMAINDER OF THIS EXAMPLE NEEDS ANY MODIFICATION.
  ********************************** */
@@ -83,53 +83,53 @@ $toggleSiblingsPerParentRuleCounter++;
 // the wrapper selectors.
 $inputs_to_hide_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'])) . ' input';
 $inputs_to_show_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'])) . ' input';
-$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditionalBoilerplateToggleSiblingsPerParent['entityType']][$conditionalBoilerplateToggleSiblingsPerParent['entityId']]['JoineryToggleSiblingsPerParent_' . $toggleSiblingsPerParentRuleCounter] = array(
+$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$conditionalBoilerplateToggleSiblingsPerParent['entityType']][$conditionalBoilerplateToggleSiblingsPerParent['entityId']]['JoineryToggleSiblingsPerParent_' . $toggleSiblingsPerParentRuleCounter] = [
   // We use $toggleSiblingsPerParentRuleCounter to ensure that every rule has a
   // unique key name, which is important if we're re-using this boilerplate block
   // multiple times on the same entity page.
-  'conditions' => array(
-    'all_of' => array(
-      array(
+  'conditions' => [
+    'all_of' => [
+      [
         'selector' => $conditionalBoilerplateToggleSiblingsPerParent['selectors']['triggering_checkable_option'],
         'op' => 'is_checked',
-      ),
-    ),
-  ),
-  'states' => array(
-    'pass' => array(
-      'selectors' => array(
-        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => array(
+      ],
+    ],
+  ],
+  'states' => [
+    'pass' => [
+      'selectors' => [
+        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => [
           'display' => 'show',
-        ),
-        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
+        ],
+        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => [
           'display' => 'hide',
-        ),
-        $inputs_to_hide_if_triggering_is_checked => array(
+        ],
+        $inputs_to_hide_if_triggering_is_checked => [
           'is_price_change' => TRUE,
-          'properties' => array(
+          'properties' => [
             'checked' => FALSE,
-          ),
-        ),
-      ),
-    ),
-    'fail' => array(
-      'selectors' => array(
-        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
+          ],
+        ],
+      ],
+    ],
+    'fail' => [
+      'selectors' => [
+        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_hide_if_triggering_is_checked'] => [
           'display' => 'show',
-        ),
-        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => array(
+        ],
+        $conditionalBoilerplateToggleSiblingsPerParent['selectors']['wrapper_to_show_if_triggering_is_checked'] => [
           'display' => 'hide',
-        ),
-        $inputs_to_show_if_triggering_is_checked => array(
+        ],
+        $inputs_to_show_if_triggering_is_checked => [
           'is_price_change' => TRUE,
-          'properties' => array(
+          'properties' => [
             'checked' => FALSE,
-          ),
-        ),
-      ),
-    ),
-  ),
-);
+          ],
+        ],
+      ],
+    ],
+  ],
+];
 /* *************************************
  * END: Boilerplate code for "toggleSiblingsPerParent" example rule definition.
  ************************************* */

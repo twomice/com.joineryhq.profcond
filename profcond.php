@@ -62,14 +62,14 @@ function profcond_civicrm_buildForm($formName, &$form) {
         CRM_Core_Resources::singleton()->addStyleUrl($styleUrl);
       }
 
-      $jsVars = array(
+      $jsVars = [
         // Whether civicrm debugging is on:
         'isDebug' => (bool) Civi::settings()->get('debug_enabled'),
         // Full configuration for this page:
         'pageConfig' => $pageConfig,
         // The ID of this form (relevant esp. in multi-participant event registrations)
         'formId' => $form->_attributes['id'],
-      );
+      ];
       // Add query params to jsVars[queryParams] -- but only if they're strings.
       foreach ($_GET as $k => $v) {
         if (is_string($v)) {
@@ -89,7 +89,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
       }
       CRM_Core_Resources::singleton()->addVars('profcond', $jsVars);
       // Add a hidden field for transmitting names of dynamically hidden fields.
-      $form->add('hidden', 'profcond_hidden_fields', NULL, array('id' => 'profcond_hidden_fields'));
+      $form->add('hidden', 'profcond_hidden_fields', NULL, ['id' => 'profcond_hidden_fields']);
       // Take specific action when form has been submitted with an action that will
       // incur form validation.
       $actionName = $form->controller->_actionName[1];
@@ -113,7 +113,7 @@ function profcond_civicrm_buildForm($formName, &$form) {
         // Now we know the value of profcond_hidden_fields. Temporarily strip them
         // from the "required" array. (We'll add them back later in hook_civicrm_validateForm().)
         $hiddenFieldNames = array_unique(json_decode($hiddenFieldNamesJson) ?? []);
-        $temporarilyUnrequiredFields = array();
+        $temporarilyUnrequiredFields = [];
         foreach ($hiddenFieldNames as $hiddenFieldName) {
           $baseHiddenFieldName = $hiddenFieldName;
           $wasRequired = _profcond_unrequire_field($baseHiddenFieldName, $form);
