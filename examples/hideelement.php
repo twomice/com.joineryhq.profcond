@@ -11,7 +11,7 @@
  * 
  */
 // jQuery selectors (CSS selectors) for 
-$HideElement = array(
+$HideElement = [
   /**
    *  Special value indicating the context of this rule:
    *    'event' if this is for an event registration form
@@ -29,7 +29,7 @@ $HideElement = array(
   /**
    * CSS selectors that are used by jQuery to identify the relevant form elements.
    */
-  'selectors' => array(
+  'selectors' => [
     /**
      * Selector identifying the triggering field (checkbox or radio button), the state of
      * which will cause the price fields to be HIDDEN.
@@ -45,45 +45,45 @@ $HideElement = array(
     'wrapper_to_hide_if_triggering_is_checked' => '
       div.price-set-row.a_la_carte-row1
      '
- ),
-);
+ ],
+];
 /*********************************
  * NOTHING IN THE FOLLOWING ARRAY NEEDS ANY MODIFICATION.
  ***********************************/
 $HideElementRuleCounter++;
 $inputs_to_hide_if_triggering_is_checked = str_replace(',', ' input,', str_replace("\n", ' ', $HideElement['selectors']['wrapper_to_hide_if_triggering_is_checked'])) . ' input';
-$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$HideElement['entityType']][$HideElement['entityId']]['JoineryHideElement_' . $HideElementRuleCounter] = array(
+$civicrm_setting['com.joineryhq.profcond']['com.joineryhq.profcond'][$HideElement['entityType']][$HideElement['entityId']]['JoineryHideElement_' . $HideElementRuleCounter] = [
   // We use $HideElementRuleCounter to ensure that every rule has a 
   // unique key name, which is important if we're re-using this boilerplate block
   // multiple times on the same entity page.
-  'conditions' => array(
-    'all_of' => array(
-      array(
+  'conditions' => [
+    'all_of' => [
+      [
         'selector' => $HideElement['selectors']['triggering_checkable_option'],
         'op' => 'is_checked',
-      ),
-    ),
-  ),
-  'states' => array(
-    'pass' => array(
-      'selectors' => array(
-        $HideElement['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
+      ],
+    ],
+  ],
+  'states' => [
+    'pass' => [
+      'selectors' => [
+        $HideElement['selectors']['wrapper_to_hide_if_triggering_is_checked'] => [
           'display' => 'hide',
-        ),
-      ),
-    ),
-    'fail' => array(
-      'selectors' => array(
-        $HideElement['selectors']['wrapper_to_hide_if_triggering_is_checked'] => array(
+        ],
+      ],
+    ],
+    'fail' => [
+      'selectors' => [
+        $HideElement['selectors']['wrapper_to_hide_if_triggering_is_checked'] => [
           'display' => 'show',
-        ),
-        $inputs_to_hide_if_triggering_is_checked => array(
+        ],
+        $inputs_to_hide_if_triggering_is_checked => [
           'is_price_change' => TRUE,
-          'properties' => array(
+          'properties' => [
             'checked' => FALSE,
-          ),
-        ),
-      ),
-    ),
-  ),
-);
+          ],
+        ],
+      ],
+    ],
+  ],
+];
