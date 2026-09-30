@@ -8,20 +8,25 @@ CRM.$(function ($, ts) {
   var isStripePaymentProcessor = (CRM.vars.stripe !== undefined);
 
   /**
-   * Override CiviCRM's calculateTotalFee(); we want to calculate for all
-   * price fields, which we may have moved outside of #priceset.
-   * Calculate the total fee for the visible priceset.
+   * Override CiviCRM's calculateTotalFee(), if it exists. (If it does not exist,
+   * creating it here would create problems with Stripe -- and possibly other payment
+   * processors -- which tests for existence of the function).
+   *
+   * We want this function to calculate for all visible price fields, which we
+   * may have moved outside of #priceset.
    *
    * Because we're overriding a global-scope function, do not scope it
    * with `var` here.
    */
-  calculateTotalFee = function calculateTotalFee() {
-    var totalFee = 0;
-    $(".profcond-price-element[price]").each(function () {
-      totalFee = totalFee + $(this).data('line_raw_total');
-    });
-    return totalFee;
-  };
+  if (typeof calculateTotalFee == 'function') {
+    calculateTotalFee = function calculateTotalFee() {
+      var totalFee = 0;
+      $(".profcond-price-element[price]").each(function () {
+        totalFee = totalFee + $(this).data('line_raw_total');
+      });
+      return totalFee;
+    };
+  }
 
   /**
    * If console logging is enabled, print a message to the console.
