@@ -1,3 +1,9 @@
+## v1.7.7
+
+- Fix Conflict with Stripe: defining calculateTotalFee() causes 'paymentIntentID not found' (issue #58), originally reported by Andy Burns in PR #57.
+- Convert to PHP short array syntax
+
+
 ## v1.7.6
 
 - Support new [state-property]s: addClass, removeClass.
